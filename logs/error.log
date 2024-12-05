@@ -1,0 +1,2 @@
+{"level":"error","message":"Failed to initialize database connection","metadata":{"error":{"code":"SQLITE_NOTADB"},"service":"miras","timestamp":"2024-12-05T19:18:14.638Z"}}
+{"level":"error","message":"Failed to initialize database connection","metadata":{"error":{"code":"SQLITE_NOTADB"},"service":"miras","timestamp":"2024-12-05T19:18:56.229Z"}}

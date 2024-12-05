@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Base styles */
+  :root {
+    --font-sans: var(--font-inter);
+    --menubar-height: 2rem;
+  }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    background-color: var(--surface-ground);
+    color: var(--text-color);
+  }
+
+  /* PrimeReact custom styles */
+  .p-component {
+    font-family: var(--font-sans) !important;
+  }
+
+  /* Menubar styles */
+  .p-menubar {
+    padding: 0 0.5rem !important;
+    height: var(--menubar-height) !important;
+    min-height: unset !important;
+  }
+
+  .p-menubar .p-menubar-root-list {
+    padding: 0 !important;
+  }
+
+  .p-button.p-button-text {
+    padding: 0 0.5rem !important;
+  }
+
+  .p-button .p-button-icon {
+    font-size: 1rem !important;
+  }
+
+  /* DataTable styles */
+  .p-datatable .p-datatable-thead {
+    display: none;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr {
+    background: transparent !important;
+  }
+
+  /* Layout styles */
+  .miras-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  .miras-content {
+    flex: 1 1 auto;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .miras-splitter {
+    flex: 1;
+    border: none !important;
+  }
+
+  /* Splitter styles */
+  .p-splitter {
+    border: none;
+  }
+
+  .p-splitter-panel {
+    overflow: hidden;
+  }
+
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--surface-ground);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-border);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--surface-hover);
+  }
+
+  /* Mejorar accesibilidad de menús */
+  .p-menuitem-link {
+    outline: none !important;
+  }
+
+  .p-menuitem-link:focus-visible {
+    outline: 2px solid var(--primary-color) !important;
+    outline-offset: -2px !important;
+  }
+
+  /* Eliminar aria-hidden y usar inert */
+  .p-menu-overlay [aria-hidden="true"] {
+    display: none;
+  }
+
+  .p-menuitem[inert] {
+    display: none;
+  }
+
+  /* Mantener el estilo visual cuando el menú está oculto */
+  .p-menuitem:not(:focus-within):not(:hover) .p-menuitem-link {
+    background-color: transparent !important;
+  }
+
+  /* Deshabilitar aria-hidden en elementos focusables */
+  [aria-hidden="true"]:not(svg):focus,
+  [aria-hidden="true"]:not(svg):focus-within {
+    aria-hidden: false;
+  }
+
+  .dark {
+    --surface-ground: 0 0% 100%;
+    --text-color: 240 10% 3.9%;
+    --surface-border: 240 3.7% 15.9%;
+    --surface-hover: 240 4.9% 83.9%;
+  }
+}
+
+body {
+  color: rgb(var(--text-color));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--surface-ground))
+    )
+    rgb(var(--surface-ground));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

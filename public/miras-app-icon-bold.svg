@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Fondo circular -->
+  <circle cx="100" cy="100" r="90" fill="#1A1A1A"/>
+  
+  <!-- Círculo interior con degradado sutil -->
+  <circle cx="100" cy="100" r="85" fill="#262626"/>
+  
+  <!-- Letra a grande y circunflejo como elementos principales -->
+  <text x="100" y="115" 
+        font-family="Arial Black, Arial, sans-serif" 
+        font-size="180" 
+        font-weight="900" 
+        fill="#E0E0E0" 
+        text-anchor="middle"
+        dominant-baseline="middle">
+    a
+  </text>
+  
+  <!-- Circunflejo más grande y visible -->
+  <path d="M55,45 L100,15 L145,45" 
+        stroke="#4AE0A1" 
+        stroke-width="16" 
+        fill="none" 
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
