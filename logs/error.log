@@ -1,2 +1,17 @@
 {"level":"error","message":"Failed to initialize database connection","metadata":{"error":{"code":"SQLITE_NOTADB"},"service":"miras","timestamp":"2024-12-05T19:18:14.638Z"}}
 {"level":"error","message":"Failed to initialize database connection","metadata":{"error":{"code":"SQLITE_NOTADB"},"service":"miras","timestamp":"2024-12-05T19:18:56.229Z"}}
+{"level":"error","message":"[CasparCG] Connection failed","metadata":{"context":"connect","error":"Invalid version response","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:38.184Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.196Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.213Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.228Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.243Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.244Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.254Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.256Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.257Z"}}
+{"level":"error","message":"No project loaded","metadata":{"graphId":"c948569f-a33c-464b-b4f7-54aa5159e6e8","service":"miras","timestamp":"2024-12-06T00:29:09.368Z"}}
+{"level":"error","message":"Error executing PLAY command","metadata":{"error":"No project loaded","graphId":"c948569f-a33c-464b-b4f7-54aa5159e6e8","service":"miras","timestamp":"2024-12-06T00:29:09.370Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.371Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"project.findClipInProject is not a function","service":"miras","timestamp":"2024-12-06T00:43:27.436Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"project.findClipInProject is not a function","service":"miras","timestamp":"2024-12-06T00:43:45.470Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"project.findClipInProject is not a function","service":"miras","timestamp":"2024-12-06T00:45:12.926Z"}}

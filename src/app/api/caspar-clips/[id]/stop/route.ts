@@ -1,27 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ProjectService } from '@/lib/db/services/project-service';
+import { CasparClipService } from '@/lib/db/services';
 import { withErrorHandler } from '@/lib/api/middleware';
+import logger from '@/lib/logger/winston-logger';
 
-const projectService = ProjectService.getInstance();
+const casparClipService = CasparClipService.getInstance();
 
 export async function POST(
     request: NextRequest,
     { params }: { params: { id: string } }
 ) {
-    console.log(`[CasparClip API] ⭐ Received STOP request`, {
+    console.log(`[CasparClip API] ⭐ Received STOP request for clip ${params.id}`, {
         clipId: params.id,
         method: request.method,
-        url: request.url
+        url: request.url,
+        headers: Object.fromEntries(request.headers.entries())
     });
     
     return withErrorHandler(async () => {
-        console.log(`[CasparClip API] 📨 Forwarding STOP command to ProjectService`, {
+        console.log(`[CasparClip API] 📨 Forwarding STOP command to CasparClipService`, {
             clipId: params.id,
-            service: 'ProjectService.stopClip'
+            service: 'CasparClipService.stopClip'
         });
         
         try {
-            await projectService.stopClip(params.id);
+            await casparClipService.stopClip(params.id);
             console.log(`[CasparClip API] ✅ STOP command executed successfully`, {
                 clipId: params.id,
                 status: 'success'

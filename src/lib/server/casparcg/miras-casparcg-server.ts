@@ -21,19 +21,79 @@ export class MirasCasparCGServer {
 
     constructor(public readonly config: MirasCasparCGServerConfig) {
         this.sseService = SSEService.getInstance();
+        logger.info(`[CasparCG] Initializing server instance`, {
+            serverName: this.config.name,
+            host: this.config.host,
+            port: this.config.port
+        });
+
         this.connection = new CasparCG({
             host: config.host,
             port: config.port,
             autoConnect: false,
-            debug: true,
-            onConnected: () => {
-                this.status = MirasServerStatus.CONNECTED;
-                this.broadcastStateChange();
-            },
-            onDisconnected: () => {
-                this.status = MirasServerStatus.DISCONNECTED;
-                this.broadcastStateChange();
-            }
+            debug: true
+        });
+
+        // Usar eventos nativos de CasparCG
+        this.connection.on('connected', () => {
+            // Actualizar estado
+            this.status = MirasServerStatus.CONNECTED;
+
+            // Log
+            logger.info(`[CasparCG] Server connected`, {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                status: this.status
+            });
+
+            // Notificar cambio de estado
+            this.sseService.broadcast(SSEEventType.SERVER_STATE_CHANGED, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                state: { status: this.status }
+            });
+
+            // Log de servidor
+            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                level: 'info',
+                message: `Connected to ${this.config.name}`
+            });
+        });
+
+        this.connection.on('disconnected', () => {
+            // Actualizar estado
+            this.status = MirasServerStatus.DISCONNECTED;
+
+            // Log
+            logger.info(`[CasparCG] Server disconnected`, {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                status: this.status
+            });
+
+            // Notificar cambio de estado
+            this.sseService.broadcast(SSEEventType.SERVER_STATE_CHANGED, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                state: { status: this.status }
+            });
+
+            // Log de servidor
+            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                level: 'info',
+                message: `Disconnected from ${this.config.name}`
+            });
+        });
+
+        logger.info(`[CasparCG] Server instance initialized`, {
+            serverName: this.config.name,
+            currentStatus: this.status
         });
     }
 
@@ -49,14 +109,21 @@ export class MirasCasparCGServer {
     }
 
     private handleConnectionError(error: any, context: string): never {
-        const errorMessage = `Connection failed to server "${this.config.name}" (${this.config.host}:${this.config.port})`;
-        console.log('[MirasCasparCGServer] ❌', errorMessage, error);
+        logger.error(`[CasparCG] Connection failed`, {
+            serverName: this.config.name,
+            host: this.config.host,
+            port: this.config.port,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            context
+        });
 
-        // Actualizar estado
         this.status = MirasServerStatus.ERROR;
+        const errorMessage = `Connection failed to server "${this.config.name}" (${this.config.host}:${this.config.port})`;
+        
+        // Notificar el error a través de SSE
         this.broadcastStateChange(errorMessage);
-
-        // Notificar el error
+        
+        // Notificar el error en los logs
         this.sseService.broadcast(SSEEventType.SERVER_LOG, {
             timestamp: Date.now(),
             entityId: this.config.id,
@@ -64,60 +131,141 @@ export class MirasCasparCGServer {
             message: errorMessage
         });
 
-        throw new Error(errorMessage);
+        const casparError = new CasparError(
+            'Failed to connect to server',
+            this.config.id,
+            context,
+            {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                originalError: error instanceof Error ? error.message : 'Unknown error'
+            }
+        );
+
+        throw casparError;
+    }
+
+    private async checkServerStatus(): Promise<boolean> {
+        try {
+            // Intentar obtener la versión del servidor
+            const versionResponse = await this.connection.version();
+            
+            // Si tenemos cualquier respuesta del servidor, considerarlo como conectado
+            return this.connection.connected;
+        } catch (error) {
+            logger.warn(`[CasparCG] Failed to get server version`, {
+                serverName: this.config.name,
+                error: error instanceof Error ? error.message : 'Unknown error'
+            });
+            return false;
+        }
     }
 
     public async connect(): Promise<void> {
+        logger.info(`[CasparCG] Attempting to connect to server`, {
+            serverName: this.config.name,
+            host: this.config.host,
+            port: this.config.port,
+            currentStatus: this.status
+        });
+
         if (this.status === MirasServerStatus.CONNECTED) {
-            logger.info(`Already connected to server`, {
-                serverName: this.config.name,
-                serverId: this.config.id
+            logger.info(`[CasparCG] Server already connected`, {
+                serverName: this.config.name
             });
             return;
         }
 
-        logger.info(`Connecting to server`, {
-            serverName: this.config.name,
-            host: this.config.host,
-            port: this.config.port
-        });
-        
+        // Actualizar estado a CONNECTING y notificar
+        this.status = MirasServerStatus.CONNECTING;
+        this.broadcastStateChange();
+
         try {
-            this.status = MirasServerStatus.CONNECTING;
+            // Intentar conectar
+            await this.connection.connect();
+            
+            // Esperar un poco para que la conexión se establezca
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Actualizar estado
+            this.status = MirasServerStatus.CONNECTED;
+            
+            // Log
+            logger.info(`[CasparCG] Server connected`, {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                status: this.status
+            });
+
+            // Notificar cambio de estado
             this.broadcastStateChange();
 
-            await this.connection.connect();
-            logger.info(`Successfully connected to server`, {
-                serverName: this.config.name,
-                serverId: this.config.id
+            // Log de servidor
+            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                level: 'info',
+                message: `Connected to ${this.config.name}`
             });
-            
-            this.status = MirasServerStatus.CONNECTED;
-            this.broadcastStateChange();
-        } catch (error) {
-            this.status = MirasServerStatus.ERROR;
-            
-            const casparError = new CasparError(
-                'Failed to connect to server',
-                this.config.id,
-                'connect',
-                {
+
+            // Verificar la conexión después de conectar
+            try {
+                await this.verifyConnection();
+            } catch (verifyError) {
+                logger.warn(`[CasparCG] Connection verification failed, but server is connected`, {
                     serverName: this.config.name,
-                    host: this.config.host,
-                    port: this.config.port,
-                    originalError: error instanceof Error ? error.message : 'Unknown error'
-                }
-            );
-            
-            logger.error('Connection failed', {
-                error: casparError,
+                    error: verifyError instanceof Error ? verifyError.message : 'Unknown error'
+                });
+            }
+        } catch (error) {
+            this.handleConnectionError(error, 'connect');
+        }
+    }
+
+    public async disconnect(): Promise<void> {
+        if (!this.connection.connected) {
+            logger.info(`[CasparCG] Server already disconnected`, {
                 serverName: this.config.name,
                 host: this.config.host,
                 port: this.config.port
             });
+            return;
+        }
+
+        try {
+            logger.info(`[CasparCG] Attempting to disconnect from server`, {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                currentStatus: this.status
+            });
+
+            await this.connection.disconnect();
+            // El evento 'disconnected' se encargará de actualizar el estado
             
-            this.broadcastStateChange(error instanceof Error ? error.message : 'Unknown error');
-            throw casparError;
+            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                level: 'info',
+                message: `Disconnected from ${this.config.name}`
+            });
+        } catch (error) {
+            logger.error(`[CasparCG] Disconnection failed`, {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                error: error instanceof Error ? error.message : 'Unknown error'
+            });
+
+            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
+                timestamp: Date.now(),
+                entityId: this.config.id,
+                level: 'error',
+                message: error instanceof Error ? error.message : 'Unknown error'
+            });
+            throw error;
         }
     }
 
@@ -180,68 +328,61 @@ export class MirasCasparCGServer {
         }
     }
 
-    public async disconnect(): Promise<void> {
-        if (this.status === MirasServerStatus.DISCONNECTED) {
-            return;
-        }
-
-        try {
-            await this.connection.disconnect();
-            console.log('[MirasCasparCGServer] Disconnection successful');
-
-            this.status = MirasServerStatus.DISCONNECTED;
-            this.broadcastStateChange();
-            
-            // Notificar desconexión exitosa
-            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
-                timestamp: Date.now(),
-                entityId: this.config.id,
-                level: 'info',
-                message: `Disconnected from ${this.config.name}`
-            });
-        } catch (error) {
-            console.error('[MirasCasparCGServer] Disconnect failed:', error);
-            this.sseService.broadcast(SSEEventType.SERVER_LOG, {
-                timestamp: Date.now(),
-                entityId: this.config.id,
-                level: 'error',
-                message: error instanceof Error ? error.message : 'Unknown error'
-            });
-            throw error;
-        }
-    }
-
     public async playClip(channel: number, layer: number, file: string): Promise<void> {
         if (this.status !== MirasServerStatus.CONNECTED) {
-            const error = 'Server is not connected';
-            console.error(`[MirasCasparCGServer] ❌ ${error}`);
+            const error = `Server is not connected (status: ${this.status})`;
+            this.logger.error(`[MirasCasparCGServer] ❌ ${error}`, {
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port,
+                currentStatus: this.status
+            });
             throw new Error(error);
         }
 
         if (!file) {
             const error = 'File name is required';
-            console.error(`[MirasCasparCGServer] ❌ ${error}`);
+            this.logger.error(`[MirasCasparCGServer] ❌ ${error}`);
             throw new Error(error);
         }
 
-        console.log(`[MirasCasparCGServer] 🎬 Playing file "${file}" on channel ${channel}, layer ${layer}`);
+        this.logger.info(`[MirasCasparCGServer] 🎬 Playing file`, {
+            file,
+            channel,
+            layer,
+            serverName: this.config.name,
+            host: this.config.host,
+            port: this.config.port,
+            connectionStatus: this.connection.connected ? 'connected' : 'disconnected'
+        });
+
         try {
             const playCommand = { 
                 channel, 
                 layer, 
                 clip: file 
             };
-            console.log(`[MirasCasparCGServer] 📝 Sending play command:`, JSON.stringify(playCommand, null, 2));
+            this.logger.info(`[MirasCasparCGServer] 📝 Sending play command`, {
+                command: playCommand,
+                serverName: this.config.name
+            });
             
             const { error: playError, request } = await this.connection.play(playCommand);
 
             if (playError) {
-                console.error(`[MirasCasparCGServer] ❌ Error in play command:`, playError);
+                this.logger.error(`[MirasCasparCGServer] ❌ Error in play command`, {
+                    error: playError,
+                    command: playCommand,
+                    serverName: this.config.name
+                });
                 throw new Error(playError);
             }
 
             const response = await request;
-            console.log(`[MirasCasparCGServer] ✅ Play command executed successfully:`, response);
+            this.logger.info(`[MirasCasparCGServer] ✅ Play command executed successfully`, {
+                response,
+                serverName: this.config.name
+            });
             
             this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
                 timestamp: Date.now(),
@@ -256,7 +397,13 @@ export class MirasCasparCGServer {
                 }
             });
         } catch (error) {
-            console.error(`[MirasCasparCGServer] ❌ Error playing file "${file}":`, error);
+            this.logger.error(`[MirasCasparCGServer] ❌ Error playing file`, {
+                file,
+                error: error instanceof Error ? error.message : 'Unknown error',
+                serverName: this.config.name,
+                host: this.config.host,
+                port: this.config.port
+            });
             
             this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
                 timestamp: Date.now(),

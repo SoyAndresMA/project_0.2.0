@@ -1,28 +1,29 @@
 import { NextRequest } from 'next/server';
-import { ProjectService } from '@/lib/db/services';
+import { CasparClipService } from '@/lib/db/services';
 import { withErrorHandler } from '@/lib/api/middleware';
+import logger from '@/lib/logger/winston-logger';
 
-const projectService = ProjectService.getInstance();
+const casparClipService = CasparClipService.getInstance();
 
 export async function POST(
     request: NextRequest,
     { params }: { params: { id: string } }
 ) {
-    console.log(`[CasparClip API] ⭐ Received PLAY request`, {
+    logger.info('Received PLAY request for clip', {
         clipId: params.id,
         method: request.method,
         url: request.url
     });
     
     return withErrorHandler(async () => {
-        console.log(`[CasparClip API] 📨 Forwarding PLAY command to ProjectService`, {
+        logger.info('Forwarding PLAY command to CasparClipService', {
             clipId: params.id,
-            service: 'ProjectService.playClip'
+            service: 'CasparClipService.playClip'
         });
         
         try {
-            await projectService.playClip(params.id);
-            console.log(`[CasparClip API] ✅ PLAY command executed successfully`, {
+            await casparClipService.playClip(params.id);
+            logger.info('PLAY command executed successfully', {
                 clipId: params.id,
                 status: 'success'
             });
@@ -33,7 +34,7 @@ export async function POST(
             });
             
         } catch (error) {
-            console.error(`[CasparClip API] ❌ Error executing PLAY command`, {
+            logger.error('Error executing PLAY command', {
                 clipId: params.id,
                 error: error instanceof Error ? error.message : 'Unknown error'
             });

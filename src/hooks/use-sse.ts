@@ -20,6 +20,13 @@ export function useSSE(options: UseSSEOptions = {}) {
         eventSource.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
+                console.log('[SSE] Received event:', data);
+                
+                if (!data.type) {
+                    console.warn('[SSE] Event missing type:', data);
+                    return;
+                }
+
                 options.onEvent?.(data.type, data.data);
             } catch (error) {
                 console.error('[SSE] Error parsing event:', error);
@@ -27,7 +34,13 @@ export function useSSE(options: UseSSEOptions = {}) {
             }
         };
 
+        eventSource.onerror = (error) => {
+            console.error('[SSE] Connection error:', error);
+            options.onError?.(error);
+        };
+
         return () => {
+            console.log('[SSE] Closing connection');
             eventSource.close();
             eventSourceRef.current = null;
         };

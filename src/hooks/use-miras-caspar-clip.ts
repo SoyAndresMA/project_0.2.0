@@ -66,35 +66,24 @@ export function useMirasCasparClip(): UseMirasCasparClipResult {
     }, []);
 
     const playClip = useCallback(async (clipId: string) => {
-        console.log(`[useMirasCasparClip] 📤 Sending play request for clip ${clipId}`);
+        console.log('[useMirasCasparClip] 📤 Sending play request for clip', { clipId });
         try {
-            console.log(`[useMirasCasparClip] 🔍 Making request to: /api/caspar-clips/${clipId}/play`);
             const response = await fetch(`/api/caspar-clips/${clipId}/play`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-debug': 'true'
+                    'Accept': 'application/json'
                 }
             });
             
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.message || 'Error playing clip');
+                throw new Error(data.message || 'Failed to play clip');
             }
-
-            const data = await response.json();
-            console.log(`[useMirasCasparClip] ✅ Response:`, data);
-            return data;
+            return response.json();
         } catch (error) {
-            console.error(`[useMirasCasparClip] ❌ Error playing clip ${clipId}:`, error);
-            setClipStates(prevStates => ({
-                ...prevStates,
-                [clipId]: {
-                    ...prevStates[clipId],
-                    error: error instanceof Error ? error.message : 'Unknown error'
-                }
-            }));
-            throw error;
+            console.error('[useMirasCasparClip] ❌ Error playing clip:', error);
+            throw error instanceof Error ? error : new Error('Unknown error');
         }
     }, []);
 

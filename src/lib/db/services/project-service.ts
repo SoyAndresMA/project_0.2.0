@@ -2,7 +2,7 @@ import { MirasProject } from '@/lib/project/miras-project';
 import { SSEService } from '@/lib/sse/sse-service';
 import { SSEEventType } from '@/lib/sse/events';
 import { MirasCasparClip, MirasCasparClipConfig } from '@/lib/items/miras-casparclip';
-import { MirasCasparGraph } from '@/lib/items/miras-caspargraph';
+import { MirasCasparGraph, MirasCasparGraphConfig } from '@/lib/items/miras-caspargraph';
 import { BaseService } from './base-service';
 import { CasparCGServerService } from './casparcg-server-service';
 
@@ -68,7 +68,7 @@ export class ProjectService extends BaseService<ProjectEntity> {
         return this.project;
     }
 
-    private findClipInProject(clipId: string): MirasCasparClip | null {
+    public findClipInProject(clipId: string): MirasCasparClip | null {
         if (!this.project) {
             logger.error('No project loaded when searching for clip', { clipId });
             return null;
@@ -76,19 +76,53 @@ export class ProjectService extends BaseService<ProjectEntity> {
 
         const projectState = this.project.getState();
         
+        logger.debug('Searching for clip in project', {
+            clipId,
+            projectId: projectState.id,
+            projectName: projectState.name,
+            eventCount: Object.keys(projectState.events).length
+        });
+        
         // Buscar en todos los eventos
-        for (const event of Object.values(projectState.events)) {
+        for (const [eventId, event] of Object.entries(projectState.events)) {
+            logger.debug(`Searching in event`, {
+                clipId,
+                eventId,
+                eventName: event.name,
+                rowCount: Object.keys(event.rows).length
+            });
+            
             // Buscar en todas las filas del evento
-            for (const row of Object.values(event.rows)) {
+            for (const [rowId, row] of Object.entries(event.rows)) {
+                logger.debug(`Searching in row`, {
+                    clipId,
+                    eventId,
+                    rowId,
+                    itemCount: Object.keys(row.items).length
+                });
+                
                 // Buscar en todos los items de la fila
-                for (const item of Object.values(row.items)) {
+                for (const [itemId, item] of Object.entries(row.items)) {
+                    logger.debug(`Checking item`, {
+                        clipId,
+                        itemId,
+                        itemType: item.typeItem?.item_type,
+                        itemName: item.data.name
+                    });
+                    
                     if (item.data.id === clipId && 
                         item.typeItem?.item_type === 'casparclip') {
                         
-                        logger.debug('Found clip in project', {
+                        logger.info('Found clip in project', {
                             clipId: item.data.id,
                             clipName: item.data.name,
-                            projectId: this.project.getState().id
+                            projectId: this.project.getState().id,
+                            eventId,
+                            rowId,
+                            itemId,
+                            serverId: item.data.casparcg_server_id,
+                            channel: item.data.channel,
+                            layer: item.data.layer
                         });
                         
                         return new MirasCasparClip({
@@ -105,7 +139,9 @@ export class ProjectService extends BaseService<ProjectEntity> {
 
         logger.warn('Clip not found in project', {
             clipId,
-            projectId: this.project.getState().id
+            projectId: this.project.getState().id,
+            projectName: this.project.getState().name,
+            eventCount: Object.keys(projectState.events).length
         });
 
         return null;
@@ -158,55 +194,6 @@ export class ProjectService extends BaseService<ProjectEntity> {
         return null;
     }
 
-    public async playClip(clipId: string): Promise<void> {
-        if (!this.project) {
-            const error = 'No project loaded';
-            logger.error(error, { clipId });
-            throw new ProjectError(error, 'unknown', 'playClip', { clipId });
-        }
-
-        logger.info('Attempting to play clip', {
-            clipId,
-            projectId: this.project.getState().id,
-            projectName: this.project.getState().name
-        });
-
-        const clip = this.findClipInProject(clipId);
-        if (!clip) {
-            const error = `Clip ${clipId} not found in project`;
-            logger.error(error, {
-                clipId,
-                projectId: this.project.getState().id
-            });
-            throw new ProjectError(error, this.project.getState().id, 'playClip', { clipId });
-        }
-
-        // Actualizar el estado de reproducción
-        this.project.updateClipPlaybackState(clipId, 'playing');
-        
-        try {
-            // Usar la instancia existente de MirasCasparClip
-            await clip.play();
-            
-            this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
-                timestamp: Date.now(),
-                entityId: clipId,
-                itemType: 'casparclip',
-                state: 'playing'
-            });
-        } catch (error) {
-            console.error(`[ProjectService] ❌ Error playing clip ${clipId}:`, error);
-            this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
-                timestamp: Date.now(),
-                entityId: clipId,
-                itemType: 'casparclip',
-                state: 'error',
-                error: error instanceof Error ? error.message : 'Unknown error'
-            });
-            throw error;
-        }
-    }
-
     public async playGraph(graphId: string): Promise<void> {
         if (!this.project) {
             const error = 'No project loaded';
@@ -255,48 +242,6 @@ export class ProjectService extends BaseService<ProjectEntity> {
                 itemType: 'caspargraph',
                 state: 'error',
                 error: error instanceof Error ? error.message : 'Unknown error'
-            });
-            throw error;
-        }
-    }
-
-    public async stopClip(clipId: string): Promise<void> {
-        if (!this.project) {
-            const error = 'No project loaded';
-            console.error(`[ProjectService] ❌ ${error}`);
-            throw new Error(error);
-        }
-
-        console.log(`[ProjectService] 🛑 Attempting to stop clip ${clipId} in project ${this.project.getState().name}`);
-
-        const clip = this.findClipInProject(clipId);
-        if (!clip) {
-            const error = `Clip ${clipId} not found in project`;
-            console.error(`[ProjectService] ❌ ${error}`);
-            throw new Error(error);
-        }
-        
-        // Actualizar el estado de reproducción
-        this.project.updateClipPlaybackState(clipId, 'stopped');
-        
-        try {
-            // Usar la instancia existente de MirasCasparClip
-            await clip.stop();
-            
-            this.sseService.broadcast(SSEEventType.CLIP_STATE_CHANGED, {
-                timestamp: Date.now(),
-                clipId,
-                state: 'stopped',
-                projectId: this.project.getState().id
-            });
-        } catch (error) {
-            console.error(`[ProjectService] ❌ Error stopping clip ${clipId}:`, error);
-            this.sseService.broadcast(SSEEventType.CLIP_STATE_CHANGED, {
-                timestamp: Date.now(),
-                clipId,
-                state: 'error',
-                error: error instanceof Error ? error.message : 'Unknown error',
-                projectId: this.project.getState().id
             });
             throw error;
         }

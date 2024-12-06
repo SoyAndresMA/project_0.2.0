@@ -269,3 +269,306 @@
 {"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:15:25.019Z"}}
 {"level":"info","message":"Setting project","metadata":{"projectId":"b703ae12-bd4a-42cd-b9e9-48915cbe634e","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-05T22:15:25.159Z"}}
 {"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:15:25.194Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:38:40.271Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:38:42.977Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:38:42.952Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"amadell","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:38:42.981Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"ba224f1c-09e4-4ac1-aec0-7a47ce2630e9","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:38:42.984Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:38:42.987Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:39:50.308Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:39:50.315Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:39:52.178Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"b703ae12-bd4a-42cd-b9e9-48915cbe634e","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-05T22:39:52.325Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:39:52.410Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:41:21.035Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:41:35.696Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:41:35.673Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"amadell","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:41:35.699Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:41:35.703Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:41:35.705Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:45:54.193Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:45:56.625Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:45:56.603Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:45:56.627Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:45:56.630Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:45:56.632Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:46:08.491Z"}}
+{"level":"info","message":"Already connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:46:08.493Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:46:08.495Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:46:09.240Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:49:36.363Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:49:37.137Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:49:37.117Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:49:37.144Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:07.270Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:09.156Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:09.135Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:50:09.160Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:50:09.163Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:50:09.166Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:15.366Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:15.348Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:50:15.372Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:33.027Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:50:33.029Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:50:33.032Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:50:33.035Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:33.774Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:50:42.644Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:50:42.655Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:56:59.631Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:01.745Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:01.721Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:01.748Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:01.752Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:01.754Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:08.816Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:08.797Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:08.822Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:13.883Z"}}
+{"level":"info","message":"Connecting to server","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:13.885Z"}}
+{"level":"info","message":"Successfully connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:13.887Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:13.889Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:14.653Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:23.566Z"}}
+{"level":"info","message":"Already connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:23.568Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:23.569Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:24.315Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:25.974Z"}}
+{"level":"info","message":"Already connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:25.977Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:25.980Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:26.734Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:26.935Z"}}
+{"level":"info","message":"Already connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:26.937Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:26.938Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:27.262Z"}}
+{"level":"info","message":"Already connected to server","metadata":{"serverId":"66190623-6e1d-4d5c-b375-0af0988c9032","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T22:57:27.263Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T22:57:27.264Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T22:57:27.720Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:17:52.559Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:18:00.909Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:18:00.886Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:18:00.916Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:18:17.884Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:18:17.896Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:20:09.015Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:20:09.019Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:20:09.020Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:20:11.303Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:20:11.278Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:20:11.287Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:20:11.289Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:20:11.307Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:20:11.311Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:25:15.548Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:25:15.552Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:25:15.553Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:25:17.550Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:25:17.526Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:25:17.535Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:25:17.537Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:25:17.553Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:25:17.557Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:28:18.344Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:28:18.348Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:28:18.350Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:28:20.552Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:28:20.529Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:28:20.537Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:28:20.539Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:28:20.555Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:28:20.559Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:32:23.109Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:32:23.114Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:32:23.125Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:28.846Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:28.848Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:32:38.156Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:32:38.133Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:38.141Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:38.144Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:38.160Z"}}
+{"level":"error","message":"[CasparCG] Connection failed","metadata":{"context":"connect","error":"Invalid version response","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:32:38.184Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":500,"timestamp":"2024-12-05T23:32:38.200Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:35:24.253Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:24.257Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:24.259Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:35:26.576Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:35:26.552Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:26.561Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:26.563Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:26.579Z"}}
+{"level":"info","message":"[CasparCG] Server connected","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","status":"CONNECTED","timestamp":"2024-12-05T23:35:27.583Z"}}
+{"level":"warn","message":"[CasparCG] Connection verification failed, but server is connected","metadata":{"error":"Invalid version response","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:27.608Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:35:27.610Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:35:45.146Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:35:45.125Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:45.133Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:45.135Z"}}
+{"level":"info","message":"[CasparCG] Attempting to disconnect from server","metadata":{"currentStatus":"CONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:35:45.148Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:35:45.154Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:47:54.266Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:47:54.271Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:47:54.272Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:47:57.024Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:47:57.001Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:47:57.009Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:47:57.012Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:47:57.027Z"}}
+{"level":"info","message":"[CasparCG] Server connected","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","status":"CONNECTED","timestamp":"2024-12-05T23:47:58.030Z"}}
+{"level":"warn","message":"[CasparCG] Connection verification failed, but server is connected","metadata":{"error":"Invalid version response","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:47:58.046Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:47:58.048Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:48:00.595Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:48:00.602Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:48:02.873Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-05T23:48:02.987Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:48:03.033Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:59:32.877Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:59:32.881Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:59:32.882Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:59:34.881Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-05T23:59:34.854Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:59:34.863Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:59:34.865Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:59:34.885Z"}}
+{"level":"info","message":"[CasparCG] Server connected","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","status":"CONNECTED","timestamp":"2024-12-05T23:59:35.891Z"}}
+{"level":"warn","message":"[CasparCG] Connection verification failed, but server is connected","metadata":{"error":"Invalid version response","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-05T23:59:35.909Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:59:35.911Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:59:37.409Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:59:37.417Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-05T23:59:39.670Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-05T23:59:39.785Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-05T23:59:39.854Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:05:09.390Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:05:09.394Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:05:09.396Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:05:11.382Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:05:11.358Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:05:11.367Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:05:11.369Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:05:11.384Z"}}
+{"level":"info","message":"[CasparCG] Server connected","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","status":"CONNECTED","timestamp":"2024-12-06T00:05:12.388Z"}}
+{"level":"warn","message":"[CasparCG] Connection verification failed, but server is connected","metadata":{"error":"Invalid version response","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:05:12.406Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:05:12.408Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:05:15.673Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:05:15.680Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:05:18.182Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:05:18.296Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:05:18.357Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:13:35.007Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:13:35.011Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:13:35.013Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:13:38.375Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:13:38.352Z"}}
+{"level":"info","message":"[CasparCG] Initializing server instance","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:13:38.360Z"}}
+{"level":"info","message":"[CasparCG] Server instance initialized","metadata":{"currentStatus":"DISCONNECTED","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:13:38.362Z"}}
+{"level":"info","message":"[CasparCG] Attempting to connect to server","metadata":{"currentStatus":"DISCONNECTED","host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:13:38.377Z"}}
+{"level":"info","message":"[CasparCG] Server connected","metadata":{"host":"192.168.0.168","port":5250,"serverName":"Playout Principal","service":"miras","status":"CONNECTED","timestamp":"2024-12-06T00:13:39.380Z"}}
+{"level":"warn","message":"[CasparCG] Connection verification failed, but server is connected","metadata":{"error":"Invalid version response","serverName":"Playout Principal","service":"miras","timestamp":"2024-12-06T00:13:39.410Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:13:39.413Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:14:06.314Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:14:06.322Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:14:08.528Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:14:08.652Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:14:08.709Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:21:26.801Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:21:26.807Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:21:26.818Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:21:28.778Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:21:28.878Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:21:28.910Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:07.852Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.129Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.190Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.194Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.196Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.209Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.212Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.213Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.225Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.227Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.228Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.239Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.241Z"}}
+{"level":"error","message":"No project loaded","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:29:09.243Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.244Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.254Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.256Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.257Z"}}
+{"level":"info","message":"Received PLAY request for graph","metadata":{"graphId":"c948569f-a33c-464b-b4f7-54aa5159e6e8","method":"POST","service":"miras","timestamp":"2024-12-06T00:29:09.363Z","url":"http://localhost:3000/api/caspar-graphs/c948569f-a33c-464b-b4f7-54aa5159e6e8/play"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.336Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:09.365Z"}}
+{"level":"info","message":"Forwarding PLAY command to ProjectService","metadata":{"graphId":"c948569f-a33c-464b-b4f7-54aa5159e6e8","service":"ProjectService.playGraph","timestamp":"2024-12-06T00:29:09.367Z"}}
+{"level":"error","message":"No project loaded","metadata":{"graphId":"c948569f-a33c-464b-b4f7-54aa5159e6e8","service":"miras","timestamp":"2024-12-06T00:29:09.368Z"}}
+{"level":"error","message":"Error executing PLAY command","metadata":{"error":"No project loaded","graphId":"c948569f-a33c-464b-b4f7-54aa5159e6e8","service":"miras","timestamp":"2024-12-06T00:29:09.370Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"No project loaded","service":"miras","timestamp":"2024-12-06T00:29:09.371Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:42.164Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:29:42.171Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:29:44.184Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:29:44.311Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:29:44.382Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:33:08.431Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:33:08.437Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:33:08.447Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:33:10.311Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:33:10.414Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:33:10.445Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:39:51.047Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:39:51.052Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:39:51.063Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:39:53.236Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:39:53.336Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:39:53.367Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:43:27.408Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:43:27.431Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:43:27.434Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"project.findClipInProject is not a function","service":"miras","timestamp":"2024-12-06T00:43:27.436Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:43:45.465Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:43:45.467Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"project.findClipInProject is not a function","service":"miras","timestamp":"2024-12-06T00:43:45.470Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:43:46.388Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:44:43.664Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:45:12.922Z"}}
+{"level":"info","message":"Attempting to play clip","metadata":{"clipId":"7722e664-f995-475f-a0d0-d9de4673526d","service":"miras","timestamp":"2024-12-06T00:45:12.924Z"}}
+{"level":"error","message":"Unhandled Error","metadata":{"error":"project.findClipInProject is not a function","service":"miras","timestamp":"2024-12-06T00:45:12.926Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:45:13.834Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:53:55.145Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:53:55.152Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:53:55.164Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T00:54:00.528Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T00:54:00.530Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T00:54:00.625Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T00:54:00.650Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T01:08:26.108Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T01:08:26.113Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T01:08:26.124Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T01:08:29.539Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T01:08:29.544Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T01:08:29.639Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T01:08:29.670Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T12:46:12.963Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T12:46:12.970Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T12:46:12.982Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T12:46:19.356Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T12:46:19.361Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T12:46:19.477Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T12:46:19.517Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T12:56:08.807Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T12:56:08.816Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T12:56:08.829Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T12:56:11.777Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T12:56:11.780Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T12:56:11.887Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T12:56:11.918Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T13:16:45.344Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T13:16:45.352Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T13:16:45.365Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T13:16:48.249Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T13:16:48.347Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T13:16:48.378Z"}}
+{"level":"info","message":"Database connection initialized","metadata":{"service":"miras","timestamp":"2024-12-06T14:13:34.691Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T14:13:34.697Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T14:13:34.708Z"}}
+{"level":"info","message":"Incoming API request","metadata":{"service":"miras","timestamp":"2024-12-06T14:13:36.712Z"}}
+{"level":"info","message":"Setting project","metadata":{"projectId":"920bfafe-e884-4ed3-9e00-5a42531a9c91","projectName":"Informativo Tarde","service":"miras","timestamp":"2024-12-06T14:13:36.813Z"}}
+{"level":"info","message":"API request completed","metadata":{"service":"miras","status":200,"timestamp":"2024-12-06T14:13:36.843Z"}}

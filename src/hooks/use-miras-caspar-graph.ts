@@ -127,14 +127,22 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
 
     const playGraph = useCallback(async (graphId: string): Promise<MirasCasparGraphPlayResponse> => {
         try {
+            console.log('[useMirasCasparGraph] 📤 Sending play request for graph', { graphId });
             const response = await fetch(`/api/caspar-graphs/${graphId}/play`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
             });
             
-            if (!response.ok) throw new Error('Failed to play graph');
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || 'Failed to play graph');
+            }
             return response.json();
         } catch (error) {
+            console.error('[useMirasCasparGraph] ❌ Error playing graph:', error);
             throw error instanceof Error ? error : new Error('Unknown error');
         }
     }, []);

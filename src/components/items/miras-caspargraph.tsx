@@ -19,8 +19,46 @@ export function MirasCasparGraphComponent({
     typeItemUnion, 
     typeItem
 }: MirasCasparGraphComponentProps) {
-    const { playGraph, stopGraph } = useMirasCasparGraph();
-    const [isPlaying, setIsPlaying] = useState(false);
+    const { playGraph, stopGraph, graphStates } = useMirasCasparGraph();
+    const graphState = graphStates[graph?.id || ''];
+    const isPlaying = graphState?.playing || false;
+
+    const handlePlayClick = useCallback(async () => {
+        console.log('[MirasCasparGraph] 🖱️ Play button clicked', {
+            graphId: graph?.id,
+            graphName: graph?.name,
+            currentState: isPlaying ? 'playing' : 'stopped',
+            action: isPlaying ? 'stop' : 'play'
+        });
+        
+        try {
+            if (!graph) {
+                console.error('[MirasCasparGraph] ❌ No graph provided');
+                return;
+            }
+
+            if (!graph.id) {
+                console.error('[MirasCasparGraph] ❌ Graph has no ID', graph);
+                return;
+            }
+
+            if (isPlaying) {
+                console.log('[MirasCasparGraph] 🛑 Stopping graph', {
+                    graphId: graph.id,
+                    graphName: graph.name
+                });
+                await stopGraph(graph.id);
+            } else {
+                console.log('[MirasCasparGraph] ▶️ Playing graph', {
+                    graphId: graph.id,
+                    graphName: graph.name
+                });
+                await playGraph(graph.id);
+            }
+        } catch (error) {
+            console.error('[MirasCasparGraph] ❌ Error controlling graph:', error);
+        }
+    }, [graph, isPlaying, playGraph, stopGraph]);
 
     if (!graph) {
         return null;
@@ -30,27 +68,6 @@ export function MirasCasparGraphComponent({
     const iconClass = typeItemUnion?.icon ? 
         (typeItemUnion.icon.startsWith('pi ') ? typeItemUnion.icon : `pi ${typeItemUnion.icon}`) : 
         'pi pi-file';
-
-    const handlePlayClick = useCallback(async () => {
-        console.log('[MirasCasparGraph] 🖱️ Play button clicked', {
-            graphId: graph.id,
-            graphName: graph.name,
-            currentState: isPlaying ? 'playing' : 'stopped',
-            action: isPlaying ? 'stop' : 'play'
-        });
-        
-        try {
-            if (isPlaying) {
-                await stopGraph(graph.id);
-                setIsPlaying(false);
-            } else {
-                await playGraph(graph.id);
-                setIsPlaying(true);
-            }
-        } catch (error) {
-            console.error('[MirasCasparGraph] ❌ Error controlling graph:', error);
-        }
-    }, [graph.id, graph.name, isPlaying, playGraph, stopGraph]);
 
     return (
         <Card 

@@ -3,7 +3,7 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { MirasCasparClip, MirasItemUnion, TypeItemUnion, TypeItem } from '@/lib/db/types';
-import { useMirasCasparControl } from '@/hooks/use-miras-caspar-control';
+import { useMirasCasparClip } from '@/hooks/use-miras-caspar-clip';
 import { useState, useCallback } from 'react';
 
 interface MirasCasparClipComponentProps {
@@ -19,8 +19,36 @@ export function MirasCasparClipComponent({
     typeItemUnion, 
     typeItem
 }: MirasCasparClipComponentProps) {
-    const { playClip, stopClip } = useMirasCasparControl();
-    const [isPlaying, setIsPlaying] = useState(false);
+    const { playClip, stopClip, clipStates, isServerConnected } = useMirasCasparClip();
+    const clipState = clip ? clipStates[clip.id] : null;
+    const isPlaying = clipState?.playing || false;
+
+    const handlePlayClick = useCallback(async () => {
+        if (!clip) return;
+
+        console.log('[MirasCasparClip] 🖱️ Play button clicked', {
+            clipId: clip.id,
+            clipName: clip.name,
+            currentState: isPlaying ? 'playing' : 'stopped',
+            action: isPlaying ? 'stop' : 'play',
+            serverConnected: isServerConnected,
+            clipConfig: {
+                serverId: clip.casparcg_server_id,
+                channel: clip.channel,
+                layer: clip.layer
+            }
+        });
+        
+        try {
+            if (isPlaying) {
+                await stopClip(clip.id);
+            } else {
+                await playClip(clip.id);
+            }
+        } catch (error) {
+            console.error('[MirasCasparClip] ❌ Error controlling clip:', error);
+        }
+    }, [clip, isPlaying, playClip, stopClip, isServerConnected]);
 
     if (!clip) {
         return null;
@@ -30,27 +58,6 @@ export function MirasCasparClipComponent({
     const iconClass = typeItemUnion?.icon ? 
         (typeItemUnion.icon.startsWith('pi ') ? typeItemUnion.icon : `pi ${typeItemUnion.icon}`) : 
         'pi pi-file';
-
-    const handlePlayClick = useCallback(async () => {
-        console.log('[MirasCasparClip] 🖱️ Play button clicked', {
-            clipId: clip.id,
-            clipName: clip.name,
-            currentState: isPlaying ? 'playing' : 'stopped',
-            action: isPlaying ? 'stop' : 'play'
-        });
-        
-        try {
-            if (isPlaying) {
-                await stopClip(clip.id);
-                setIsPlaying(false);
-            } else {
-                await playClip(clip.id);
-                setIsPlaying(true);
-            }
-        } catch (error) {
-            console.error('[MirasCasparClip] ❌ Error controlling clip:', error);
-        }
-    }, [clip.id, clip.name, isPlaying, playClip, stopClip]);
 
     return (
         <Card 

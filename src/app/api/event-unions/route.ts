@@ -3,7 +3,7 @@ import { EventUnionService } from '@/lib/db/services';
 import { SSEService } from '@/lib/sse/sse-service';
 import { SSEEventType } from '@/lib/sse/events';
 import { withErrorHandler, ApiError } from '@/lib/api/middleware';
-import { eventUnionSchemas } from '@/lib/api/schemas';
+import { createEventUnionSchema, updateEventUnionSchema } from '@/lib/api/schemas';
 
 const eventUnionService = EventUnionService.getInstance();
 const sseService = SSEService.getInstance();
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     return withErrorHandler(async () => {
         const data = await request.json();
-        const validated = eventUnionSchemas.createEventUnionSchema.parse(data);
+        const validated = createEventUnionSchema.parse(data);
         
         const eventUnion = await eventUnionService.create(validated);
         
@@ -54,7 +54,7 @@ export async function PUT(request: NextRequest) {
             throw new ApiError(400, 'Event Union ID is required');
         }
         
-        const validated = eventUnionSchemas.updateEventUnionSchema.parse(updateData);
+        const validated = updateEventUnionSchema.parse(updateData);
         const eventUnion = await eventUnionService.update(id, validated);
         
         if (!eventUnion) {

@@ -12,20 +12,36 @@ import { useMirasCasparCGServer } from '@/hooks/use-miras-casparcg-server';
 export function TestCasparCG() {
     const { onEvent } = useSSE({
         onEvent: (type, data) => {
+            console.log('[TestCasparCG] Received event:', { type, data });
+            
             switch (type) {
                 case SSEEventType.SERVER_STATE_CHANGED:
-                    if (data.state) {
+                    if (data.state?.status) {
+                        console.log('[TestCasparCG] Server state changed:', { 
+                            entityId: data.entityId, 
+                            newStatus: data.state.status,
+                            timestamp: data.timestamp
+                        });
+                        
                         setServers(prevServers => 
                             prevServers.map(server => 
                                 server.id === data.entityId 
-                                    ? { ...server, ...data.state }
+                                    ? { ...server, status: data.state.status }
                                     : server
                             )
                         );
                     }
                     break;
+                    
                 case SSEEventType.SERVER_LOG:
                     if (data.message) {
+                        console.log('[TestCasparCG] Server log:', {
+                            entityId: data.entityId,
+                            level: data.level,
+                            message: data.message,
+                            timestamp: data.timestamp
+                        });
+                        
                         toastRef.current?.show({
                             severity: data.level,
                             summary: 'Server Log',
@@ -37,7 +53,7 @@ export function TestCasparCG() {
             }
         },
         onError: (error) => {
-            console.error('SSE Error:', error);
+            console.error('[TestCasparCG] SSE Error:', error);
             toastRef.current?.show({
                 severity: 'error',
                 summary: 'Connection Error',
@@ -47,7 +63,7 @@ export function TestCasparCG() {
         }
     });
     const [servers, setServers] = useState<any[]>([]);
-    const { error, connectServer, toastRef } = useMirasCasparCGServer();
+    const { error, connectServer, disconnectServer, toastRef } = useMirasCasparCGServer();
 
     // Suscribirse a eventos SSE
     useEffect(() => {
@@ -72,7 +88,7 @@ export function TestCasparCG() {
                 setServers([]);
             });
 
-    }, []);
+    }, [toastRef]);
 
     const statusBodyTemplate = (server: any) => {
         const severity = server.status === 'CONNECTED' ? 'success' : 
@@ -85,12 +101,18 @@ export function TestCasparCG() {
     };
 
     const actionsBodyTemplate = (server: any) => {
+        const isConnected = server.status === 'CONNECTED';
+        
         return (
             <Button
-                icon={server.status === 'CONNECTED' ? 'pi pi-power-off' : 'pi pi-play'}
-                className={`p-button-${server.status === 'CONNECTED' ? 'danger' : 'success'} p-button-sm`}
+                icon={isConnected ? 'pi pi-power-off' : 'pi pi-play'}
+                className={`p-button-${isConnected ? 'danger' : 'success'} p-button-sm`}
                 onClick={async () => {
-                    await connectServer(server.id);
+                    if (isConnected) {
+                        await disconnectServer(server.id);
+                    } else {
+                        await connectServer(server.id);
+                    }
                 }}
             />
         );

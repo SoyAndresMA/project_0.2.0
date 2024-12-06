@@ -4,6 +4,7 @@ import { Toast } from 'primereact/toast';
 interface UseMirasCasparCGServerResult {
     error: string | null;
     connectServer: (id: string) => Promise<boolean>;
+    disconnectServer: (id: string) => Promise<boolean>;
     toastRef: React.RefObject<Toast>;
 }
 
@@ -59,9 +60,55 @@ export function useMirasCasparCGServer(): UseMirasCasparCGServerResult {
         }
     };
 
+    const disconnectServer = async (id: string): Promise<boolean> => {
+        if (isConnecting) return false;
+        
+        try {
+            setIsConnecting(true);
+            setError(null);
+            
+            const response = await fetch(`/api/casparcg-servers/${id}/disconnect`, {
+                method: 'POST'
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                let errorMessage = data.error || 'Could not disconnect from server';
+                if (data.serverName) {
+                    errorMessage = `Disconnection failed from server "${data.serverName}" (${data.host}:${data.port})`;
+                }
+                
+                setError(errorMessage);
+                toastRef.current?.show({
+                    severity: 'error',
+                    summary: 'Disconnection Error',
+                    detail: errorMessage,
+                    life: 5000
+                });
+                return false;
+            }
+
+            return true;
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Network error while disconnecting from server';
+            setError(errorMessage);
+            toastRef.current?.show({
+                severity: 'error',
+                summary: 'Disconnection Error',
+                detail: errorMessage,
+                life: 5000
+            });
+            return false;
+        } finally {
+            setIsConnecting(false);
+        }
+    };
+
     return {
         error,
         connectServer,
+        disconnectServer,
         toastRef
     };
 }
