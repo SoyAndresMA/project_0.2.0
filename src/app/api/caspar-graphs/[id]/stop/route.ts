@@ -1,44 +1,77 @@
-import { NextRequest } from 'next/server';
-import { ProjectService } from '@/lib/db/services';
-import { withErrorHandler } from '@/lib/api/middleware';
+// Configuración de segmento de ruta
+export const dynamic = 'force-dynamic' // Asegura que la ruta siempre sea dinámica
+export const runtime = 'nodejs' // Especifica el runtime
+
+import { NextResponse } from 'next/server';
+import { CasparGraphService } from '@/lib/db/services';
 import logger from '@/lib/logger/winston-logger';
 
-const projectService = ProjectService.getInstance();
+const casparGraphService = CasparGraphService.getInstance();
 
 export async function POST(
-    request: NextRequest,
+    request: Request,
     { params }: { params: { id: string } }
 ) {
-    logger.info('Received STOP request for graph', {
-        graphId: params.id,
-        method: request.method,
-        url: request.url
-    });
-    
-    return withErrorHandler(async () => {
-        logger.info('Forwarding STOP command to ProjectService', {
+    // Validar método HTTP
+    if (request.method !== 'POST') {
+        return NextResponse.json(
+            { success: false, error: 'Method not allowed' },
+            { status: 405 }
+        );
+    }
+
+    try {
+        logger.info('POST /api/caspar-graphs/[id]/stop received', {
             graphId: params.id,
-            service: 'ProjectService.stopGraph'
+            url: request.url
         });
-        
-        try {
-            await projectService.stopGraph(params.id);
-            logger.info('STOP command executed successfully', {
-                graphId: params.id,
-                status: 'success'
-            });
-            
-            return Response.json({
-                success: true,
-                graphId: params.id
-            });
-            
-        } catch (error) {
-            logger.error('Error executing STOP command', {
-                graphId: params.id,
+
+        await casparGraphService.stopGraph(params.id);
+
+        return NextResponse.json(
+            { success: true, graphId: params.id },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST',
+                    'Access-Control-Allow-Headers': 'Content-Type'
+                }
+            }
+        );
+
+    } catch (error) {
+        logger.error('Error in POST /api/caspar-graphs/[id]/stop', {
+            graphId: params.id,
+            error: error instanceof Error ? error.message : 'Unknown error'
+        });
+
+        return NextResponse.json(
+            { 
+                success: false,
                 error: error instanceof Error ? error.message : 'Unknown error'
-            });
-            throw error;
+            },
+            { 
+                status: 500,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST',
+                    'Access-Control-Allow-Headers': 'Content-Type'
+                }
+            }
+        );
+    }
+}
+
+// Manejar preflight requests para CORS
+export async function OPTIONS() {
+    return NextResponse.json(
+        {},
+        {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
         }
-    });
+    );
 }

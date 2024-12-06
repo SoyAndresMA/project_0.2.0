@@ -15,13 +15,6 @@ export enum SSEEventType {
     ITEM_POSITION_CHANGED = 'item_position_changed',
     ITEM_DATA_UPDATED = 'item_data_updated',
 
-    // Eventos de Servidor
-    SERVER_CREATED = 'server_created',
-    SERVER_UPDATED = 'server_updated',
-    SERVER_DELETED = 'server_deleted',
-    SERVER_STATE_CHANGED = 'server_state_changed',
-    SERVER_LOG = 'server_log',
-
     // Eventos de Sistema
     SYSTEM_ERROR = 'system_error',
     SYSTEM_WARNING = 'system_warning',

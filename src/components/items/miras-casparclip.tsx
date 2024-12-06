@@ -19,7 +19,7 @@ export function MirasCasparClipComponent({
     typeItemUnion, 
     typeItem
 }: MirasCasparClipComponentProps) {
-    const { playClip, stopClip, clipStates, isServerConnected } = useMirasCasparClip();
+    const { playClip, stopClip, clipStates } = useMirasCasparClip();
     const clipState = clip ? clipStates[clip.id] : null;
     const isPlaying = clipState?.playing || false;
 
@@ -30,13 +30,7 @@ export function MirasCasparClipComponent({
             clipId: clip.id,
             clipName: clip.name,
             currentState: isPlaying ? 'playing' : 'stopped',
-            action: isPlaying ? 'stop' : 'play',
-            serverConnected: isServerConnected,
-            clipConfig: {
-                serverId: clip.casparcg_server_id,
-                channel: clip.channel,
-                layer: clip.layer
-            }
+            action: isPlaying ? 'stop' : 'play'
         });
         
         try {
@@ -48,7 +42,7 @@ export function MirasCasparClipComponent({
         } catch (error) {
             console.error('[MirasCasparClip] ❌ Error controlling clip:', error);
         }
-    }, [clip, isPlaying, playClip, stopClip, isServerConnected]);
+    }, [clip, isPlaying, playClip, stopClip]);
 
     if (!clip) {
         return null;

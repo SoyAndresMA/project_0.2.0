@@ -14,7 +14,7 @@ interface UseMirasCasparGraphResult {
     selectedGraph: MirasCasparGraphResponse | null;
     isLoading: boolean;
     error: string | null;
-    fetchGraphs: (eventId?: string, serverId?: string) => Promise<void>;
+    fetchGraphs: () => Promise<void>;
     selectGraph: (graph: MirasCasparGraphResponse) => void;
     createGraph: (data: Partial<MirasCasparGraphResponse>) => Promise<MirasCasparGraphResponse>;
     updateGraph: (id: string, data: Partial<MirasCasparGraphResponse>) => Promise<MirasCasparGraphResponse>;
@@ -44,15 +44,11 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
         }, [])
     });
 
-    const fetchGraphs = useCallback(async (eventId?: string, serverId?: string) => {
+    const fetchGraphs = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
-            const params = new URLSearchParams();
-            if (eventId) params.append('eventId', eventId);
-            if (serverId) params.append('serverId', serverId);
-
-            const response = await fetch(`/api/caspar-graphs?${params}`);
+            const response = await fetch('/api/caspar-graphs');
             if (!response.ok) throw new Error('Failed to fetch graphs');
             
             const data = await response.json();

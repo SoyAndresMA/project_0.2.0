@@ -1,10 +1,10 @@
 import { MirasServerStatus } from '../server/types/server-status';
 
 /**
- * API Response type for CasparCG Server
+ * API Response type for Server
  * Represents the server data as it will be sent to the frontend
  */
-export interface MirasCasparCGServerResponse {
+export interface MirasServerResponse {
     // Base fields
     id: string;
     name: string;
@@ -26,16 +26,16 @@ export interface MirasCasparCGServerResponse {
 }
 
 /**
- * API Request type for connecting to CasparCG Server
+ * API Request type for connecting to Server
  */
-export interface MirasCasparCGServerConnectRequest {
+export interface MirasServerConnectRequest {
     id: string;
 }
 
 /**
  * API Response for connection attempts
  */
-export interface MirasCasparCGServerConnectResponse {
+export interface MirasServerConnectResponse {
     connected: boolean;
     error?: string;
 }
@@ -43,129 +43,117 @@ export interface MirasCasparCGServerConnectResponse {
 /**
  * Server log message format for API responses
  */
-export interface MirasCasparCGServerLogMessage {
+export interface MirasServerLogMessage {
     timestamp: string;          // ISO date string
     type: 'info' | 'error' | 'warning';
     message: string;
 }
 
 /**
- * API types for CasparCG Clips
+ * API types for Clips
  */
-export interface MirasCasparCGClipResponse {
+export interface MirasClipResponse {
     id: string;
     eventId: string;
     typeItemId: string;
-    casparCGServerId: string;
     itemUnionId: string;
     name: string;
     description?: string;
     positionRow: number;
     positionColumn: number;
     label?: string;
-    channel?: number;
-    layer?: number;
     loop?: boolean;
     delay?: number;
     transitionType?: string;
     transitionDuration?: number;
     createdAt: string;
     updatedAt: string;
-    state?: MirasCasparCGClipState;
+    state?: MirasClipState;
 }
 
-export interface MirasCasparCGClipState {
+export interface MirasClipState {
     playing: boolean;
     paused: boolean;
     position?: number;
     length?: number;
     error?: string;
-    channel: number;
-    layer: number;
-    filename: string;
 }
 
-export interface MirasCasparCGClipPlayRequest {
+export interface MirasClipPlayRequest {
     clipId: string;
 }
 
-export interface MirasCasparCGClipPlayResponse {
+export interface MirasClipPlayResponse {
     success: boolean;
     error?: string;
-    state?: MirasCasparCGClipState;
+    state?: MirasClipState;
 }
 
-export interface MirasCasparCGClipStopRequest {
+export interface MirasClipStopRequest {
     clipId: string;
 }
 
-export interface MirasCasparCGClipStopResponse {
+export interface MirasClipStopResponse {
     success: boolean;
     error?: string;
-    state?: MirasCasparCGClipState;
+    state?: MirasClipState;
 }
 
 /**
- * API types for CasparCG Graph (Templates)
+ * API types for Graph (Templates)
  */
-export interface MirasCasparGraphResponse {
+export interface MirasGraphResponse {
     id: string;
     eventId: string;
     typeItemId: string;
-    casparCGServerId: string;
     itemUnionId: string;
     name: string;
     description?: string;
     positionRow: number;
     positionColumn: number;
     label?: string;
-    channel?: number;
-    layer?: number;
     delay?: number;
     duration?: number;
     keyvalue?: string;
     createdAt: string;
     updatedAt: string;
-    state?: MirasCasparGraphState;
+    state?: MirasGraphState;
 }
 
-export interface MirasCasparGraphState {
+export interface MirasGraphState {
     playing: boolean;
     paused: boolean;
     error?: string;
-    channel: number;
-    layer: number;
-    templateName: string;
     data?: Record<string, any>;
 }
 
-export interface MirasCasparGraphPlayRequest {
+export interface MirasGraphPlayRequest {
     graphId: string;
 }
 
-export interface MirasCasparGraphPlayResponse {
+export interface MirasGraphPlayResponse {
     success: boolean;
     error?: string;
-    state?: MirasCasparGraphState;
+    state?: MirasGraphState;
 }
 
-export interface MirasCasparGraphStopRequest {
+export interface MirasGraphStopRequest {
     graphId: string;
 }
 
-export interface MirasCasparGraphStopResponse {
+export interface MirasGraphStopResponse {
     success: boolean;
     error?: string;
-    state?: MirasCasparGraphState;
+    state?: MirasGraphState;
 }
 
-export interface MirasCasparGraphUpdateRequest {
+export interface MirasGraphUpdateRequest {
     graphId: string;
     data: Record<string, any>;
 }
 
-export interface MirasCasparGraphUpdateResponse {
+export interface MirasGraphUpdateResponse {
     success: boolean;
     error?: string;
-    state?: MirasCasparGraphState;
+    state?: MirasGraphState;
 }

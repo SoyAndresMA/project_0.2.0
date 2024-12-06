@@ -12,14 +12,8 @@ interface ClipStates {
     [clipId: string]: ClipState;
 }
 
-interface ServerStatus {
-    isConnected: boolean;
-    error?: string;
-}
-
 interface UseMirasCasparClipResult {
     clipStates: ClipStates;
-    isServerConnected: boolean;
     playClip: (clipId: string) => Promise<void>;
     stopClip: (clipId: string) => Promise<void>;
 }
@@ -28,16 +22,9 @@ const globalClipStates: ClipStates = {};
 
 export function useMirasCasparClip(): UseMirasCasparClipResult {
     const [clipStates, setClipStates] = useState<ClipStates>(globalClipStates);
-    const [isServerConnected, setIsServerConnected] = useState<boolean>(false);
 
     useEffect(() => {
         const eventSource = new EventSource('/api/sse');
-
-        // Escuchar eventos de estado del servidor
-        eventSource.addEventListener('server_status', (event) => {
-            const data = JSON.parse(event.data);
-            setIsServerConnected(data.status === 'CONNECTED');
-        });
 
         // Escuchar eventos de estado de clip
         eventSource.addEventListener('clip_state', (event) => {
@@ -55,11 +42,6 @@ export function useMirasCasparClip(): UseMirasCasparClipResult {
             }));
         });
 
-        // Escuchar errores
-        eventSource.onerror = (error) => {
-            console.error('[useMirasCasparClip] ❌ SSE connection error:', error);
-        };
-
         return () => {
             eventSource.close();
         };
@@ -68,7 +50,43 @@ export function useMirasCasparClip(): UseMirasCasparClipResult {
     const playClip = useCallback(async (clipId: string) => {
         console.log('[useMirasCasparClip] 📤 Sending play request for clip', { clipId });
         try {
-            const response = await fetch(`/api/caspar-clips/${clipId}/play`, {
+            console.log('[useMirasCasparClip] 🌐 Making fetch request to', `/api/caspar/clips/${clipId}/play`);
+            const response = await fetch(`/api/caspar/clips/${clipId}/play`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            
+            console.log('[useMirasCasparClip] ✅ Received response', { 
+                status: response.status,
+                ok: response.ok,
+                statusText: response.statusText
+            });
+            
+            if (!response.ok) {
+                const data = await response.json();
+                console.error('[useMirasCasparClip] ❌ Response not OK', { 
+                    status: response.status,
+                    data 
+                });
+                throw new Error(data.message || 'Failed to play clip');
+            }
+
+            const result = await response.json();
+            console.log('[useMirasCasparClip] 📥 Received response data', { result });
+            return result;
+        } catch (error) {
+            console.error('[useMirasCasparClip] ❌ Error playing clip:', error);
+            throw error instanceof Error ? error : new Error('Unknown error');
+        }
+    }, []);
+
+    const stopClip = useCallback(async (clipId: string) => {
+        console.log('[useMirasCasparClip] 📤 Sending stop request for clip', { clipId });
+        try {
+            const response = await fetch(`/api/caspar/clips/${clipId}/stop`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,46 +96,17 @@ export function useMirasCasparClip(): UseMirasCasparClipResult {
             
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.message || 'Failed to play clip');
+                throw new Error(data.message || 'Failed to stop clip');
             }
             return response.json();
         } catch (error) {
-            console.error('[useMirasCasparClip] ❌ Error playing clip:', error);
+            console.error('[useMirasCasparClip] ❌ Error stopping clip:', error);
             throw error instanceof Error ? error : new Error('Unknown error');
-        }
-    }, []);
-
-    const stopClip = useCallback(async (clipId: string) => {
-        try {
-            const baseUrl = window.location.origin;
-            const url = `${baseUrl}/api/caspar-clips/${clipId}/stop`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Error stopping clip');
-            }
-        } catch (error) {
-            setClipStates(prevStates => ({
-                ...prevStates,
-                [clipId]: {
-                    ...prevStates[clipId],
-                    error: error.message
-                }
-            }));
-            throw error;
         }
     }, []);
 
     return {
         clipStates,
-        isServerConnected,
         playClip,
         stopClip
     };

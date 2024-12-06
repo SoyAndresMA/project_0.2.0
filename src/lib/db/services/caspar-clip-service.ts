@@ -81,6 +81,12 @@ export class CasparClipService extends BaseService<CasparClip> {
         logger.info('Attempting to play clip', { clipId });
 
         const project = this.projectService.getProject();
+        logger.info('Project state', { 
+            hasProject: !!project,
+            projectId: project?.id,
+            projectName: project?.name
+        });
+
         if (!project) {
             const error = 'No project loaded';
             logger.error(error, { clipId });
@@ -88,6 +94,13 @@ export class CasparClipService extends BaseService<CasparClip> {
         }
 
         const clip = project.getClip(clipId);
+        logger.info('Clip state', { 
+            hasClip: !!clip,
+            clipId,
+            clipName: clip?.name,
+            clipType: clip?.constructor.name
+        });
+
         if (!clip) {
             const error = `Clip ${clipId} not found in project`;
             logger.error(error, { clipId });
@@ -95,12 +108,24 @@ export class CasparClipService extends BaseService<CasparClip> {
         }
 
         // Actualizar el estado de reproducción en el proyecto
+        logger.info('Updating clip playback state', {
+            clipId,
+            newState: 'playing'
+        });
         project.updateClipPlaybackState(clipId, 'playing');
         
         try {
             // Usar la instancia de MirasCasparClip para reproducir
+            logger.info('Calling clip.play()', {
+                clipId,
+                clipName: clip.name
+            });
             await clip.play();
             
+            logger.info('Broadcasting state change', {
+                clipId,
+                state: 'playing'
+            });
             this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
                 timestamp: Date.now(),
                 entityId: clipId,
@@ -109,6 +134,11 @@ export class CasparClipService extends BaseService<CasparClip> {
             });
         } catch (error) {
             console.error(`[CasparClipService] ❌ Error playing clip ${clipId}:`, error);
+            logger.error('Error playing clip', {
+                clipId,
+                error: error instanceof Error ? error.message : 'Unknown error',
+                stack: error instanceof Error ? error.stack : undefined
+            });
             this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
                 timestamp: Date.now(),
                 entityId: clipId,
