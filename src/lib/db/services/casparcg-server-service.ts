@@ -146,34 +146,43 @@ export class CasparCGServerService extends BaseService<CasparCGServerEntity> {
     }
 
     public async create(config: Omit<MirasCasparCGServerConfig, 'id'>): Promise<MirasCasparCGServer> {
-        const entity = await super.create({
-            name: config.name,
-            host: config.host,
-            port: config.port,
-            enabled: config.enabled ? 1 : 0,
-            description: config.description,
-            version: config.version,
-            media_library: config.mediaLibrary,
-            command_timeout: config.commandTimeout
-        });
+        try {
+            const entity = await super.create({
+                name: config.name,
+                host: config.host,
+                port: config.port,
+                enabled: config.enabled ? 1 : 0,
+                description: config.description,
+                version: config.version,
+                media_library: config.mediaLibrary,
+                command_timeout: config.commandTimeout
+            });
 
-        const serverConfig: MirasCasparCGServerConfig = {
-            id: entity.id,
-            name: entity.name,
-            host: entity.host,
-            port: entity.port,
-            enabled: Boolean(entity.enabled),
-            description: entity.description,
-            version: entity.version,
-            mediaLibrary: entity.media_library,
-            commandTimeout: entity.command_timeout
-        };
+            if (!entity || !entity.id) {
+                throw new Error('Failed to create server: Invalid entity returned from database');
+            }
 
-        const server = new MirasCasparCGServer(serverConfig);
-        this.setupServerEvents(server);
-        this.servers.set(entity.id, server);
+            const serverConfig: MirasCasparCGServerConfig = {
+                id: entity.id,
+                name: entity.name,
+                host: entity.host,
+                port: entity.port,
+                enabled: Boolean(entity.enabled),
+                description: entity.description,
+                version: entity.version,
+                mediaLibrary: entity.media_library,
+                commandTimeout: entity.command_timeout
+            };
 
-        return server;
+            const server = new MirasCasparCGServer(serverConfig);
+            this.setupServerEvents(server);
+            this.servers.set(entity.id, server);
+
+            return server;
+        } catch (error) {
+            console.error('[CasparCGServerService] Error creating server:', error);
+            throw error;
+        }
     }
 
     public async playClip(serverId: string, channel: number, layer: number, filename: string): Promise<void> {
@@ -189,6 +198,24 @@ export class CasparCGServerService extends BaseService<CasparCGServerEntity> {
         if (!server) {
             const error = `Server ${serverId} not found. Available servers: ${Array.from(this.servers.keys()).join(', ')}`;
             console.error(`[CasparCGServerService] ${error}`);
+            throw new Error(error);
+        }
+
+        // Verificar estado del servidor
+        if (server.getStatus() === MirasServerStatus.DISCONNECTED) {
+            const error = `Cannot play clip: Server ${serverId} is disconnected`;
+            console.error(`[CasparCGServerService] ${error}`);
+            
+            // Notificar error a los clientes
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
+                timestamp: Date.now(),
+                clipId: filename,
+                serverId,
+                channel,
+                layer,
+                error: error
+            });
+            
             throw new Error(error);
         }
 
@@ -239,6 +266,42 @@ export class CasparCGServerService extends BaseService<CasparCGServerEntity> {
         } catch (error) {
             console.error(`[CasparCGServerService] Error stopping clip:`, error);
             throw error;
+        }
+    }
+
+    public async connect(serverId: string): Promise<MirasCasparCGServer | null> {
+        try {
+            const server = await this.getServerInstance(serverId);
+            if (!server) {
+                return null;
+            }
+
+            await server.connect();
+            return server;
+        } catch (error) {
+            console.error('Error connecting to server', {
+                error,
+                serverId
+            });
+            throw new Error(`Failed to connect to server: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+    }
+
+    public async disconnect(serverId: string): Promise<MirasCasparCGServer | null> {
+        try {
+            const server = await this.getServerInstance(serverId);
+            if (!server) {
+                return null;
+            }
+
+            await server.disconnect();
+            return server;
+        } catch (error) {
+            console.error('Error disconnecting from server', {
+                error,
+                serverId
+            });
+            throw new Error(`Failed to disconnect from server: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 }

@@ -24,39 +24,51 @@ export function MirasCasparGraphComponent({
     const isPlaying = graphState?.playing || false;
 
     const handlePlayClick = useCallback(async () => {
-        console.log('[MirasCasparGraph] 🖱️ Play button clicked', {
-            graphId: graph?.id,
-            graphName: graph?.name,
-            currentState: isPlaying ? 'playing' : 'stopped',
-            action: isPlaying ? 'stop' : 'play'
-        });
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[MirasCasparGraph] 🖱️ Play button clicked', {
+                graphId: graph?.id,
+                graphName: graph?.name,
+                currentState: isPlaying ? 'playing' : 'stopped',
+                action: isPlaying ? 'stop' : 'play'
+            });
+        }
         
         try {
             if (!graph) {
-                console.error('[MirasCasparGraph] ❌ No graph provided');
+                if (process.env.NODE_ENV === 'development') {
+                    console.error('[MirasCasparGraph] ❌ No graph provided');
+                }
                 return;
             }
 
             if (!graph.id) {
-                console.error('[MirasCasparGraph] ❌ Graph has no ID', graph);
+                if (process.env.NODE_ENV === 'development') {
+                    console.error('[MirasCasparGraph] ❌ Graph has no ID', graph);
+                }
                 return;
             }
 
             if (isPlaying) {
-                console.log('[MirasCasparGraph] 🛑 Stopping graph', {
-                    graphId: graph.id,
-                    graphName: graph.name
-                });
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[MirasCasparGraph] 🛑 Stopping graph', {
+                        graphId: graph.id,
+                        graphName: graph.name
+                    });
+                }
                 await stopGraph(graph.id);
             } else {
-                console.log('[MirasCasparGraph] ▶️ Playing graph', {
-                    graphId: graph.id,
-                    graphName: graph.name
-                });
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[MirasCasparGraph] ▶️ Playing graph', {
+                        graphId: graph.id,
+                        graphName: graph.name
+                    });
+                }
                 await playGraph(graph.id);
             }
         } catch (error) {
-            console.error('[MirasCasparGraph] ❌ Error controlling graph:', error);
+            if (process.env.NODE_ENV === 'development') {
+                console.error('[MirasCasparGraph] ❌ Error controlling graph:', error);
+            }
         }
     }, [graph, isPlaying, playGraph, stopGraph]);
 

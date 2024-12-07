@@ -1,28 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { CasparCGServerService } from '@/lib/db/services';
-import { withErrorHandler } from '@/lib/api/middleware';
+import logger from '@/lib/logger/winston-logger';
 
 const serverService = CasparCGServerService.getInstance();
 
 export async function GET(
-    request: NextRequest,
+    request: Request,
     { params }: { params: { id: string } }
 ) {
-    return withErrorHandler(async () => {
-        console.log(`[API] Received server status request for ID: ${params.id}`);
-        
-        const server = await serverService.findById(params.id);
+    try {
+        const server = await serverService.getServerStatus(params.id);
         if (!server) {
-            throw new Error(`Server ${params.id} not found`);
+            return NextResponse.json(
+                { success: false, error: 'Server not found' },
+                { status: 404 }
+            );
         }
-
-        const status = server.getStatus();
-        console.log(`[API] Server ${params.id} status:`, status);
-        
-        return NextResponse.json({
-            success: true,
+        return NextResponse.json(server);
+    } catch (error) {
+        logger.error('Failed to get server status', {
             serverId: params.id,
-            status
+            error: error instanceof Error ? error.message : 'Unknown error'
         });
-    });
+        return NextResponse.json(
+            { success: false, error: 'Failed to get server status' },
+            { status: 500 }
+        );
+    }
 }

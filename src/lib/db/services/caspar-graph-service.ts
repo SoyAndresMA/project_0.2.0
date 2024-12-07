@@ -2,12 +2,15 @@ import { BaseService } from './base-service';
 import { CasparGraph } from '../types';
 import logger from '@/lib/logger/winston-logger';
 import { DatabaseError } from '@/lib/errors/database-error';
+import { CasparCGServerService } from './casparcg-server-service';
 
 export class CasparGraphService extends BaseService<CasparGraph> {
     private static instance: CasparGraphService;
+    private casparCGServerService: CasparCGServerService;
 
     private constructor() {
         super('caspar_graph');
+        this.casparCGServerService = CasparCGServerService.getInstance();
     }
 
     public static getInstance(): CasparGraphService {
@@ -166,6 +169,72 @@ export class CasparGraphService extends BaseService<CasparGraph> {
             throw new DatabaseError(
                 'Failed to update graph keyvalue',
                 'updateKeyValue',
+                'caspar_graph',
+                { graphId }
+            );
+        }
+    }
+
+    async play(graphId: string): Promise<CasparGraph | null> {
+        try {
+            logger.info('Playing graph', { graphId });
+            
+            const graph = await this.findById(graphId);
+            if (!graph) {
+                logger.warn('Graph not found', { graphId });
+                return null;
+            }
+
+            const server = await this.casparCGServerService.findById(graph.casparcg_server_id);
+            if (!server) {
+                logger.warn('Server not found for graph', { graphId, serverId: graph.casparcg_server_id });
+                return null;
+            }
+
+            // Aquí iría la lógica para reproducir el gráfico en el servidor CasparCG
+            // Por ahora solo actualizamos el estado en la base de datos
+            return graph;
+        } catch (error) {
+            logger.error('Error playing graph', {
+                error,
+                graphId
+            });
+            throw new DatabaseError(
+                'Failed to play graph',
+                'play',
+                'caspar_graph',
+                { graphId }
+            );
+        }
+    }
+
+    async stop(graphId: string): Promise<CasparGraph | null> {
+        try {
+            logger.info('Stopping graph', { graphId });
+            
+            const graph = await this.findById(graphId);
+            if (!graph) {
+                logger.warn('Graph not found', { graphId });
+                return null;
+            }
+
+            const server = await this.casparCGServerService.findById(graph.casparcg_server_id);
+            if (!server) {
+                logger.warn('Server not found for graph', { graphId, serverId: graph.casparcg_server_id });
+                return null;
+            }
+
+            // Aquí iría la lógica para detener el gráfico en el servidor CasparCG
+            // Por ahora solo actualizamos el estado en la base de datos
+            return graph;
+        } catch (error) {
+            logger.error('Error stopping graph', {
+                error,
+                graphId
+            });
+            throw new DatabaseError(
+                'Failed to stop graph',
+                'stop',
                 'caspar_graph',
                 { graphId }
             );

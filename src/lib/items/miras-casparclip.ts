@@ -22,11 +22,49 @@ export class MirasCasparClip {
 
     public async play(): Promise<void> {
         if (!this.config.casparcg_server_id) {
-            throw new Error('Server ID is required');
+            const error = 'Server ID is required';
+            console.error(`[MirasCasparClip] ❌ ${error}`);
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
+                clipId: this.config.id,
+                error,
+                timestamp: Date.now()
+            });
+            throw new Error(error);
         }
 
         if (!this.config.name) {
-            throw new Error('Clip name is required');
+            const error = 'Clip name is required';
+            console.error(`[MirasCasparClip] ❌ ${error}`);
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
+                clipId: this.config.id,
+                error,
+                timestamp: Date.now()
+            });
+            throw new Error(error);
+        }
+
+        // Verificar el estado del servidor antes de intentar reproducir
+        const server = await this.serverService.findById(this.config.casparcg_server_id);
+        if (!server) {
+            const error = `Server ${this.config.casparcg_server_id} not found`;
+            console.error(`[MirasCasparClip] ❌ ${error}`);
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
+                clipId: this.config.id,
+                error,
+                timestamp: Date.now()
+            });
+            throw new Error(error);
+        }
+
+        if (server.getStatus() === 'DISCONNECTED') {
+            const error = `Cannot play clip: Server ${this.config.casparcg_server_id} is disconnected`;
+            console.error(`[MirasCasparClip] ❌ ${error}`);
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
+                clipId: this.config.id,
+                error,
+                timestamp: Date.now()
+            });
+            throw new Error(error);
         }
 
         console.log(`[MirasCasparClip] 🎬 Playing clip ${this.config.name} on server ${this.config.casparcg_server_id}`);

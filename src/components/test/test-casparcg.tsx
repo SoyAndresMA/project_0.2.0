@@ -12,16 +12,20 @@ import { useMirasCasparCGServer } from '@/hooks/use-miras-casparcg-server';
 export function TestCasparCG() {
     const { onEvent } = useSSE({
         onEvent: (type, data) => {
-            console.log('[TestCasparCG] Received event:', { type, data });
+            if (process.env.NODE_ENV === 'development') {
+                console.log('[TestCasparCG] Received event:', { type, data });
+            }
             
             switch (type) {
                 case SSEEventType.SERVER_STATE_CHANGED:
                     if (data.state?.status) {
-                        console.log('[TestCasparCG] Server state changed:', { 
-                            entityId: data.entityId, 
-                            newStatus: data.state.status,
-                            timestamp: data.timestamp
-                        });
+                        if (process.env.NODE_ENV === 'development') {
+                            console.log('[TestCasparCG] Server state changed:', { 
+                                entityId: data.entityId, 
+                                newStatus: data.state.status,
+                                timestamp: data.timestamp
+                            });
+                        }
                         
                         setServers(prevServers => 
                             prevServers.map(server => 
@@ -35,12 +39,14 @@ export function TestCasparCG() {
                     
                 case SSEEventType.SERVER_LOG:
                     if (data.message) {
-                        console.log('[TestCasparCG] Server log:', {
-                            entityId: data.entityId,
-                            level: data.level,
-                            message: data.message,
-                            timestamp: data.timestamp
-                        });
+                        if (process.env.NODE_ENV === 'development') {
+                            console.log('[TestCasparCG] Server log:', {
+                                entityId: data.entityId,
+                                level: data.level,
+                                message: data.message,
+                                timestamp: data.timestamp
+                            });
+                        }
                         
                         toastRef.current?.show({
                             severity: data.level,
@@ -60,7 +66,8 @@ export function TestCasparCG() {
                 detail: 'Lost connection to server',
                 life: 3000
             });
-        }
+        },
+        debug: process.env.NODE_ENV === 'development'
     });
     const [servers, setServers] = useState<any[]>([]);
     const { error, connectServer, disconnectServer, toastRef } = useMirasCasparCGServer();

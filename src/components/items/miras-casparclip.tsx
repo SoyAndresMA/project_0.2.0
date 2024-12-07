@@ -26,12 +26,14 @@ export function MirasCasparClipComponent({
     const handlePlayClick = useCallback(async () => {
         if (!clip) return;
 
-        console.log('[MirasCasparClip] 🖱️ Play button clicked', {
-            clipId: clip.id,
-            clipName: clip.name,
-            currentState: isPlaying ? 'playing' : 'stopped',
-            action: isPlaying ? 'stop' : 'play'
-        });
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[MirasCasparClip] 🖱️ Play button clicked', {
+                clipId: clip.id,
+                clipName: clip.name,
+                currentState: isPlaying ? 'playing' : 'stopped',
+                action: isPlaying ? 'stop' : 'play'
+            });
+        }
         
         try {
             if (isPlaying) {
@@ -40,7 +42,9 @@ export function MirasCasparClipComponent({
                 await playClip(clip.id);
             }
         } catch (error) {
-            console.error('[MirasCasparClip] ❌ Error controlling clip:', error);
+            if (process.env.NODE_ENV === 'development') {
+                console.error('[MirasCasparClip] ❌ Error controlling clip:', error);
+            }
         }
     }, [clip, isPlaying, playClip, stopClip]);
 

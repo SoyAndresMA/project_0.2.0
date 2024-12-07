@@ -62,10 +62,20 @@ export abstract class BaseService<T extends BaseEntity> {
             const sql = `
                 INSERT INTO ${this.tableName} (id, ${columns.join(', ')})
                 VALUES (?, ${columns.map(() => '?').join(', ')})
+                RETURNING *
             `;
             
             const stmt = this.db.prepare(sql);
-            stmt.run(id, ...values);
+            const result = stmt.get(id, ...values);
+            
+            if (!result) {
+                throw new DatabaseError(
+                    'Failed to create record: No result returned',
+                    'create',
+                    this.tableName,
+                    { entity }
+                );
+            }
             
             logger.info('Record created successfully', {
                 table: this.tableName,
@@ -73,7 +83,7 @@ export abstract class BaseService<T extends BaseEntity> {
                 operation: 'create'
             });
             
-            return this.findById(id) as Promise<T>;
+            return this.mapToEntity(result);
         } catch (error) {
             logger.error('Failed to create record', {
                 error,

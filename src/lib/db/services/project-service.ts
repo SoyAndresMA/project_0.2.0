@@ -378,18 +378,74 @@ export class ProjectService extends BaseService<ProjectEntity> {
     }
 
     public async unloadProject(id: string): Promise<void> {
-        if (!this.project || this.project.getState().id !== id) {
-            console.log(`[ProjectService] ⚠️ Project ${id} is not loaded`);
+        logger.info('[ProjectService] 🔄 Unloading project', { id });
+
+        const project = this.getProject();
+        if (!project) {
+            logger.warn('No project to unload');
             return;
         }
 
-        console.log(`[ProjectService] 🔄 Unloading project ${id}`);
-        this.project = null;
-        
-        this.sseService.broadcast(SSEEventType.PROJECT_UNLOADED, {
-            timestamp: Date.now(),
-            projectId: id
-        });
+        if (project.getState().id !== id) {
+            logger.error('Project ID mismatch', {
+                requestedId: id,
+                loadedProjectId: project.getState().id
+            });
+            throw new ProjectError('Project ID mismatch');
+        }
+
+        try {
+            // Detener todas las reproducciones activas
+            const projectState = project.getState();
+            for (const [eventId, event] of Object.entries(projectState.events)) {
+                for (const [rowId, row] of Object.entries(event.rows)) {
+                    for (const [itemId, item] of Object.entries(row.items)) {
+                        if (item.type === 'clip') {
+                            const clip = this.findClipInProject(itemId);
+                            if (clip) {
+                                try {
+                                    await clip.stop();
+                                } catch (error) {
+                                    logger.warn('Error stopping clip during project unload', {
+                                        clipId: itemId,
+                                        error: error instanceof Error ? error.message : 'Unknown error'
+                                    });
+                                }
+                            }
+                        } else if (item.type === 'graph') {
+                            const graph = this.findGraphInProject(itemId);
+                            if (graph) {
+                                try {
+                                    await graph.stop();
+                                } catch (error) {
+                                    logger.warn('Error stopping graph during project unload', {
+                                        graphId: itemId,
+                                        error: error instanceof Error ? error.message : 'Unknown error'
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Limpiar el estado del proyecto
+            this.project = null;
+
+            // Notificar al frontend
+            this.sseService.broadcast(SSEEventType.PROJECT_UNLOADED, {
+                timestamp: Date.now(),
+                entityId: id
+            });
+
+            logger.info('[ProjectService] ✅ Project unloaded successfully', { id });
+        } catch (error) {
+            logger.error('Error unloading project', {
+                id,
+                error: error instanceof Error ? error.message : 'Unknown error'
+            });
+            throw error;
+        }
     }
 
     public async loadProject(id: string): Promise<void> {
@@ -418,7 +474,7 @@ export class ProjectService extends BaseService<ProjectEntity> {
             // Notificar que el proyecto se ha cargado
             this.sseService.broadcast(SSEEventType.PROJECT_LOADED, {
                 timestamp: Date.now(),
-                entityId: project.getState().id,
+                projectId: project.getState().id,
                 state: project.getState()
             });
         } catch (error) {

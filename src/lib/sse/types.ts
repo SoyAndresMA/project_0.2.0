@@ -1,5 +1,6 @@
 import { MirasServerState } from '../server/types/server-status';
 import { MirasProjectState } from '../project/types';
+import { CasparGraph } from '../db/types';
 
 export interface SSEClient {
     id: string;
@@ -10,6 +11,10 @@ export interface SSEClient {
 export interface SSEEventBase {
     timestamp: number;
     entityId?: string;
+    entity?: any;
+    state?: any;
+    message?: string;
+    level?: 'info' | 'warning' | 'error';
 }
 
 export interface ProjectEvent extends SSEEventBase {
@@ -29,4 +34,8 @@ export interface ServerEvent extends SSEEventBase {
 export interface SystemEvent extends SSEEventBase {
     message: string;
     level: 'info' | 'warning' | 'error';
+}
+
+export interface CasparGraphEvent extends SSEEventBase {
+    entity: CasparGraph;
 }

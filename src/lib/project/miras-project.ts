@@ -1,8 +1,10 @@
 import { MirasProjectState, MirasProjectEvent, MirasProjectItem, MirasClipPlaybackState } from './types';
-import { MirasEvent, MirasEventUnion, MirasCasparClip, MirasItemUnion } from '@/lib/db/types';
+import { MirasEvent, MirasEventUnion, MirasItemUnion } from '@/lib/db/types';
 import { EventService, EventUnionService, CasparClipService, CasparGraphService, ItemUnionService, TypeItemUnionService, TypeItemService } from '@/lib/db/services';
 import { SSEService } from '@/lib/sse/sse-service';
 import { SSEEventType } from '@/lib/sse/events';
+import { MirasCasparClip } from '@/lib/items/miras-casparclip';
+import { MirasCasparGraph } from '@/lib/items/miras-caspargraph';
 
 export class MirasProject {
     private state: MirasProjectState;
@@ -225,16 +227,41 @@ export class MirasProject {
         return undefined;
     }
 
-    // Obtener un clip por su ID
-    public getClip(clipId: string): MirasProjectItem | undefined {
-        // Buscar el clip en todos los eventos
+    // Obtener un clip o gráfico por su ID
+    public getClip(itemId: string): MirasCasparClip | MirasCasparGraph | undefined {
+        // Buscar el item en todos los eventos
         for (const event of Object.values(this.state.events)) {
             // Buscar en todas las filas del evento
             for (const row of Object.values(event.rows)) {
                 // Buscar en todos los items de la fila
                 for (const item of Object.values(row.items)) {
-                    if (item.data.id === clipId) {
-                        return item;
+                    if (item.data.id === itemId) {
+                        // Determinar si es un clip o un gráfico basado en el tipo de item
+                        const isGraph = item.typeItem.name.toLowerCase().includes('graph');
+                        
+                        // Crear la configuración base
+                        const baseConfig = {
+                            id: item.data.id,
+                            name: item.data.name,
+                            casparcg_server_id: item.data.casparcg_server_id,
+                            channel: item.data.channel,
+                            layer: item.data.layer
+                        };
+
+                        if (isGraph) {
+                            // Configuración específica para gráficos
+                            return new MirasCasparGraph({
+                                ...baseConfig,
+                                duration: item.data.duration,
+                                keyvalue: item.data.keyvalue
+                            });
+                        } else {
+                            // Configuración específica para clips
+                            return new MirasCasparClip({
+                                ...baseConfig,
+                                loop: item.data.loop
+                            });
+                        }
                     }
                 }
             }

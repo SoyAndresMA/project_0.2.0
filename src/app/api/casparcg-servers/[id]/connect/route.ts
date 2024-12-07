@@ -1,41 +1,53 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { CasparCGServerService } from '@/lib/db/services';
-import { withErrorHandler } from '@/lib/api/middleware';
+import { SSEService } from '@/lib/sse/sse-service';
+import { SSEEventType } from '@/lib/sse/events';
+import logger from '@/lib/logger/winston-logger';
 
 const serverService = CasparCGServerService.getInstance();
+const sseService = SSEService.getInstance();
 
 export async function POST(
-    request: NextRequest,
+    request: Request,
     { params }: { params: { id: string } }
 ) {
-    return withErrorHandler(async () => {
-        console.log(`[API] Attempting to connect to server ID: ${params.id}`);
-        
-        const server = await serverService.findById(params.id);
+    try {
+        logger.info('Connecting to CasparCG server', { serverId: params.id });
+
+        const server = await serverService.connect(params.id);
         if (!server) {
-            console.error(`[API] Server ${params.id} not found`);
+            logger.warn('Server not found for connection', { serverId: params.id });
             return NextResponse.json(
-                { error: `Server not found` },
+                { success: false, error: 'Server not found' },
                 { status: 404 }
             );
         }
 
-        try {
-            await server.connect();
-            console.log(`[API] Successfully connected to server ${server.config.name}`);
-            return NextResponse.json({ success: true });
-        } catch (error) {
-            console.error(`[API] Connection error:`, error);
-            return NextResponse.json(
-                { 
-                    error: error instanceof Error ? error.message : 'Unknown connection error',
-                    serverId: params.id,
-                    serverName: server.config.name,
-                    host: server.config.host,
-                    port: server.config.port
-                },
-                { status: 500 }
-            );
-        }
-    });
+        const serverStatus = server.getStatus();
+        sseService.broadcast(SSEEventType.SERVER_STATE_CHANGED, {
+            timestamp: Date.now(),
+            entityId: params.id,
+            state: { status: serverStatus }
+        });
+
+        return NextResponse.json({
+            success: true,
+            server: {
+                id: server.config.id,
+                name: server.config.name,
+                host: server.config.host,
+                port: server.config.port,
+                status: serverStatus
+            }
+        });
+    } catch (error) {
+        logger.error('Failed to connect to server', {
+            serverId: params.id,
+            error: error instanceof Error ? error.message : 'Unknown error'
+        });
+        return NextResponse.json(
+            { success: false, error: 'Failed to connect to server' },
+            { status: 500 }
+        );
+    }
 }

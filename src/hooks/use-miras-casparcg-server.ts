@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react';
+import { useSSE } from './use-sse';
+import { SSEEventType } from '@/lib/sse/events';
 import { Toast } from 'primereact/toast';
 
 interface UseMirasCasparCGServerResult {
     error: string | null;
-    connectServer: (id: string) => Promise<boolean>;
-    disconnectServer: (id: string) => Promise<boolean>;
+    connectServer: (id: string) => Promise<void>;
+    disconnectServer: (id: string) => Promise<void>;
     toastRef: React.RefObject<Toast>;
 }
 
@@ -13,93 +15,79 @@ export function useMirasCasparCGServer(): UseMirasCasparCGServerResult {
     const toastRef = useRef<Toast>(null);
     const [isConnecting, setIsConnecting] = useState(false);
 
-    const connectServer = async (id: string): Promise<boolean> => {
-        // Si ya estamos intentando conectar, no hacer nada
-        if (isConnecting) return false;
+    useSSE({
+        onEvent: (type: SSEEventType, data: any) => {
+            switch (type) {
+                case SSEEventType.SERVER_CONNECTED:
+                    toastRef.current?.show({
+                        severity: 'success',
+                        summary: 'Connected',
+                        detail: `Connected to server "${data.entity.name}"`,
+                        life: 3000
+                    });
+                    break;
+                case SSEEventType.SERVER_DISCONNECTED:
+                    toastRef.current?.show({
+                        severity: 'info',
+                        summary: 'Disconnected',
+                        detail: `Disconnected from server "${data.entity.name}"`,
+                        life: 3000
+                    });
+                    break;
+                case SSEEventType.SERVER_ERROR:
+                    setError(data.error);
+                    toastRef.current?.show({
+                        severity: 'error',
+                        summary: 'Server Error',
+                        detail: data.error,
+                        life: 5000
+                    });
+                    break;
+            }
+        }
+    });
+
+    const connectServer = async (id: string): Promise<void> => {
+        if (isConnecting) return;
         
         try {
             setIsConnecting(true);
             setError(null);
             
-            const response = await fetch(`/api/casparcg-servers/${id}/connect`, {
-                method: 'POST'
+            const response = await fetch('/api/casparcg-servers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'connect', id })
             });
-            
-            const data = await response.json();
             
             if (!response.ok) {
-                let errorMessage = data.error || 'Could not connect to server';
-                // Si tenemos información adicional del servidor, la incluimos en el mensaje
-                if (data.serverName) {
-                    errorMessage = `Connection failed to server "${data.serverName}" (${data.host}:${data.port})`;
-                }
-                
-                setError(errorMessage);
-                toastRef.current?.show({
-                    severity: 'error',
-                    summary: 'Connection Error',
-                    detail: errorMessage,
-                    life: 5000
-                });
-                return false;
+                throw new Error('Failed to connect to server');
             }
-
-            return true;
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Network error while connecting to server';
-            setError(errorMessage);
-            toastRef.current?.show({
-                severity: 'error',
-                summary: 'Connection Error',
-                detail: errorMessage,
-                life: 5000
-            });
-            return false;
+        } catch (error) {
+            throw error instanceof Error ? error : new Error('Unknown error');
         } finally {
             setIsConnecting(false);
         }
     };
 
-    const disconnectServer = async (id: string): Promise<boolean> => {
-        if (isConnecting) return false;
+    const disconnectServer = async (id: string): Promise<void> => {
+        if (isConnecting) return;
         
         try {
             setIsConnecting(true);
             setError(null);
             
-            const response = await fetch(`/api/casparcg-servers/${id}/disconnect`, {
-                method: 'POST'
+            const response = await fetch('/api/casparcg-servers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'disconnect', id })
             });
-            
-            const data = await response.json();
             
             if (!response.ok) {
-                let errorMessage = data.error || 'Could not disconnect from server';
-                if (data.serverName) {
-                    errorMessage = `Disconnection failed from server "${data.serverName}" (${data.host}:${data.port})`;
-                }
-                
-                setError(errorMessage);
-                toastRef.current?.show({
-                    severity: 'error',
-                    summary: 'Disconnection Error',
-                    detail: errorMessage,
-                    life: 5000
-                });
-                return false;
+                throw new Error('Failed to disconnect from server');
             }
-
-            return true;
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Network error while disconnecting from server';
-            setError(errorMessage);
-            toastRef.current?.show({
-                severity: 'error',
-                summary: 'Disconnection Error',
-                detail: errorMessage,
-                life: 5000
-            });
-            return false;
+        } catch (error) {
+            throw error instanceof Error ? error : new Error('Unknown error');
         } finally {
             setIsConnecting(false);
         }

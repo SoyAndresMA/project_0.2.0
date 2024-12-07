@@ -2,63 +2,114 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ProjectService } from '@/lib/db/services';
 import { SSEService } from '@/lib/sse/sse-service';
 import { SSEEventType } from '@/lib/sse/events';
-import { withErrorHandler, ApiError } from '@/lib/api/middleware';
-import { createProjectSchema, updateProjectSchema } from '@/lib/api/schemas';
 
 const projectService = ProjectService.getInstance();
 const sseService = SSEService.getInstance();
 
-export async function GET() {
-    return withErrorHandler(async () => {
-        console.log('GET /api/projects: Starting request');
-        try {
-            const projects = await projectService.findAll();
-            console.log('GET /api/projects: Projects retrieved:', projects);
-            return NextResponse.json(projects);
-        } catch (error) {
-            console.error('GET /api/projects: Error in handler:', error);
-            throw error;
-        }
-    });
-}
-
 export async function POST(request: NextRequest) {
-    return withErrorHandler(async () => {
+    try {
         const data = await request.json();
-        const validated = createProjectSchema.parse(data);
-        
-        const project = await projectService.create(validated);
-        
-        sseService.broadcast(SSEEventType.PROJECT_CREATED, {
-            timestamp: Date.now(),
-            entity: project
-        });
-        
-        return NextResponse.json(project, { status: 201 });
-    });
-}
+        const { action } = data;
 
-export async function PUT(request: NextRequest) {
-    return withErrorHandler(async () => {
-        const data = await request.json();
-        const { id, ...updateData } = data;
-        
-        if (!id) {
-            throw new ApiError(400, 'Project ID is required');
+        switch (action) {
+            case 'list': {
+                const projects = await projectService.findAll();
+                return NextResponse.json({ success: true, projects });
+            }
+
+            case 'load': {
+                const { id } = data;
+                if (!id) {
+                    return NextResponse.json(
+                        { success: false, error: 'Project ID is required' },
+                        { status: 400 }
+                    );
+                }
+
+                await projectService.loadProject(id);
+                return NextResponse.json({ success: true });
+            }
+
+            case 'unload': {
+                const { id } = data;
+                if (!id) {
+                    return NextResponse.json(
+                        { success: false, error: 'Project ID is required' },
+                        { status: 400 }
+                    );
+                }
+
+                await projectService.unload(id);
+                sseService.broadcast(SSEEventType.PROJECT_UNLOADED, {
+                    timestamp: Date.now(),
+                    projectId: id
+                });
+
+                return NextResponse.json({ success: true });
+            }
+
+            case 'create': {
+                const project = await projectService.create(data);
+                sseService.broadcast(SSEEventType.PROJECT_CREATED, {
+                    timestamp: Date.now(),
+                    entity: project
+                });
+
+                return NextResponse.json({ success: true });
+            }
+
+            case 'update': {
+                const { id, ...updateData } = data;
+                if (!id) {
+                    return NextResponse.json(
+                        { success: false, error: 'Project ID is required' },
+                        { status: 400 }
+                    );
+                }
+
+                const project = await projectService.update(id, updateData);
+                sseService.broadcast(SSEEventType.PROJECT_UPDATED, {
+                    timestamp: Date.now(),
+                    entity: project
+                });
+
+                return NextResponse.json({ success: true });
+            }
+
+            case 'delete': {
+                const { id } = data;
+                if (!id) {
+                    return NextResponse.json(
+                        { success: false, error: 'Project ID is required' },
+                        { status: 400 }
+                    );
+                }
+
+                await projectService.delete(id);
+                sseService.broadcast(SSEEventType.PROJECT_DELETED, {
+                    timestamp: Date.now(),
+                    projectId: id
+                });
+
+                return NextResponse.json({ success: true });
+            }
+
+            default:
+                return NextResponse.json(
+                    { success: false, error: 'Invalid action' },
+                    { status: 400 }
+                );
         }
-        
-        const validated = updateProjectSchema.parse(updateData);
-        const project = await projectService.update(id, validated);
-        
-        if (!project) {
-            throw new ApiError(404, 'Project not found');
-        }
-        
-        sseService.broadcast(SSEEventType.PROJECT_UPDATED, {
+    } catch (error) {
+        console.error('[Projects API] Error:', error);
+        sseService.broadcast(SSEEventType.PROJECT_ERROR, {
             timestamp: Date.now(),
-            entity: project
+            error: error instanceof Error ? error.message : 'Unknown error'
         });
-        
-        return NextResponse.json(project);
-    });
+
+        return NextResponse.json(
+            { success: false, error: 'Operation failed' },
+            { status: 500 }
+        );
+    }
 }

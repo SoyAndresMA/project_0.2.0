@@ -1,48 +1,44 @@
-import { NextRequest } from 'next/server';
-import { ProjectService } from '@/lib/db/services';
-import { withErrorHandler } from '@/lib/api/middleware';
+import { NextRequest, NextResponse } from 'next/server';
+import { CasparGraphService } from '@/lib/db/services';
+import { SSEService } from '@/lib/sse/sse-service';
+import { SSEEventType } from '@/lib/sse/events';
 import logger from '@/lib/logger/winston-logger';
 
-const projectService = ProjectService.getInstance();
+const casparGraphService = CasparGraphService.getInstance();
+const sseService = SSEService.getInstance();
 
-export async function POST(
+export async function PUT(
     request: NextRequest,
     { params }: { params: { id: string } }
 ) {
-    logger.info('Received UPDATE request for graph', {
-        graphId: params.id,
-        method: request.method,
-        url: request.url
-    });
-    
-    return withErrorHandler(async () => {
+    try {
         const data = await request.json();
-        
-        logger.info('Forwarding UPDATE command to ProjectService', {
-            graphId: params.id,
-            service: 'ProjectService.updateGraph',
-            data
-        });
-        
-        try {
-            await projectService.updateGraph(params.id, data);
-            logger.info('UPDATE command executed successfully', {
-                graphId: params.id,
-                status: 'success'
-            });
-            
-            return Response.json({
-                success: true,
-                graphId: params.id,
-                data
-            });
-            
-        } catch (error) {
-            logger.error('Error executing UPDATE command', {
-                graphId: params.id,
-                error: error instanceof Error ? error.message : 'Unknown error'
-            });
-            throw error;
+        logger.info('Updating caspar graph', { graphId: params.id, data });
+
+        const graph = await casparGraphService.update(params.id, data);
+        if (!graph) {
+            logger.warn('Graph not found for update', { graphId: params.id });
+            return NextResponse.json(
+                { success: false, error: 'Graph not found' },
+                { status: 404 }
+            );
         }
-    });
+
+        sseService.broadcast(SSEEventType.CASPAR_GRAPH_UPDATED, {
+            timestamp: Date.now(),
+            entity: graph
+        });
+
+        logger.info('Graph updated successfully', { graphId: params.id });
+        return NextResponse.json(graph);
+    } catch (error) {
+        logger.error('Failed to update graph', {
+            graphId: params.id,
+            error: error instanceof Error ? error.message : 'Unknown error'
+        });
+        return NextResponse.json(
+            { success: false, error: 'Failed to update graph' },
+            { status: 500 }
+        );
+    }
 }

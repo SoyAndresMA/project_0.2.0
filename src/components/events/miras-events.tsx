@@ -23,14 +23,17 @@ export function MirasEvents({ projectState, onEventSelect, onItemStateChange }: 
         onEvent: useCallback((type, data) => {
             if (type === SSEEventType.ITEM_STATE_CHANGED && 
                 (data.itemType === 'casparclip' || data.itemType === 'caspargraph')) {
-                console.log('[MirasEvents] Item state changed:', {
-                    type: data.itemType,
-                    id: data.entityId,
-                    state: data.state
-                });
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('[MirasEvents] Item state changed:', {
+                        type: data.itemType,
+                        id: data.entityId,
+                        state: data.state
+                    });
+                }
                 onItemStateChange?.(data.entityId, data.state);
             }
-        }, [onItemStateChange])
+        }, [onItemStateChange]),
+        debug: process.env.NODE_ENV === 'development'
     });
 
     if (!projectState?.events) return null;

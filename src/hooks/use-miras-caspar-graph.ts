@@ -14,7 +14,6 @@ interface UseMirasCasparGraphResult {
     selectedGraph: MirasCasparGraphResponse | null;
     isLoading: boolean;
     error: string | null;
-    fetchGraphs: () => Promise<void>;
     selectGraph: (graph: MirasCasparGraphResponse) => void;
     createGraph: (data: Partial<MirasCasparGraphResponse>) => Promise<MirasCasparGraphResponse>;
     updateGraph: (id: string, data: Partial<MirasCasparGraphResponse>) => Promise<MirasCasparGraphResponse>;
@@ -35,30 +34,28 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
 
     useSSE({
         onEvent: useCallback((type: SSEEventType, data: any) => {
-            if (type === SSEEventType.ITEM_STATE_CHANGED && data.itemType === 'caspargraph') {
-                setGraphStates(prev => ({
-                    ...prev,
-                    [data.entityId]: data.state
-                }));
+            switch (type) {
+                case SSEEventType.CASPAR_GRAPH_CREATED:
+                    setGraphs(prev => [...prev, data.entity]);
+                    break;
+                case SSEEventType.CASPAR_GRAPH_UPDATED:
+                    setGraphs(prev => prev.map(g => g.id === data.entity.id ? data.entity : g));
+                    break;
+                case SSEEventType.CASPAR_GRAPH_DELETED:
+                    setGraphs(prev => prev.filter(g => g.id !== data.entity.id));
+                    if (selectedGraph?.id === data.entity.id) {
+                        setSelectedGraph(null);
+                    }
+                    break;
+                case SSEEventType.CASPAR_GRAPH_STATE_CHANGED:
+                    setGraphStates(prev => ({
+                        ...prev,
+                        [data.entityId]: data.state
+                    }));
+                    break;
             }
-        }, [])
+        }, [selectedGraph])
     });
-
-    const fetchGraphs = useCallback(async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch('/api/caspar-graphs');
-            if (!response.ok) throw new Error('Failed to fetch graphs');
-            
-            const data = await response.json();
-            setGraphs(data.graphs);
-        } catch (error) {
-            setError(error instanceof Error ? error.message : 'Unknown error');
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
 
     const selectGraph = useCallback((graph: MirasCasparGraphResponse) => {
         setSelectedGraph(graph);
@@ -69,7 +66,7 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
             const response = await fetch('/api/caspar-graphs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ action: 'create', data })
             });
             
             if (!response.ok) throw new Error('Failed to create graph');
@@ -82,9 +79,9 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
     const updateGraph = useCallback(async (id: string, data: Partial<MirasCasparGraphResponse>) => {
         try {
             const response = await fetch('/api/caspar-graphs', {
-                method: 'PUT',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, ...data })
+                body: JSON.stringify({ action: 'update', id, data })
             });
             
             if (!response.ok) throw new Error('Failed to update graph');
@@ -97,9 +94,9 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
     const updatePosition = useCallback(async (id: string, position: { row: number; column: number }) => {
         try {
             const response = await fetch('/api/caspar-graphs', {
-                method: 'PATCH',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, position })
+                body: JSON.stringify({ action: 'updatePosition', id, position })
             });
             
             if (!response.ok) throw new Error('Failed to update graph position');
@@ -111,8 +108,10 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
 
     const deleteGraph = useCallback(async (id: string) => {
         try {
-            const response = await fetch(`/api/caspar-graphs?id=${id}`, {
-                method: 'DELETE'
+            const response = await fetch('/api/caspar-graphs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete', id })
             });
             
             if (!response.ok) throw new Error('Failed to delete graph');
@@ -121,33 +120,23 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
         }
     }, []);
 
-    const playGraph = useCallback(async (graphId: string): Promise<MirasCasparGraphPlayResponse> => {
+    const playGraph = useCallback(async (graphId: string) => {
         try {
-            console.log('[useMirasCasparGraph] 📤 Sending play request for graph', { graphId });
             const response = await fetch(`/api/caspar-graphs/${graphId}/play`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
+                method: 'POST'
             });
             
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Failed to play graph');
-            }
+            if (!response.ok) throw new Error('Failed to play graph');
             return response.json();
         } catch (error) {
-            console.error('[useMirasCasparGraph] ❌ Error playing graph:', error);
             throw error instanceof Error ? error : new Error('Unknown error');
         }
     }, []);
 
-    const stopGraph = useCallback(async (graphId: string): Promise<MirasCasparGraphStopResponse> => {
+    const stopGraph = useCallback(async (graphId: string) => {
         try {
             const response = await fetch(`/api/caspar-graphs/${graphId}/stop`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                method: 'POST'
             });
             
             if (!response.ok) throw new Error('Failed to stop graph');
@@ -157,7 +146,7 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
         }
     }, []);
 
-    const updateGraphData = useCallback(async (graphId: string, data: Record<string, any>): Promise<MirasCasparGraphUpdateResponse> => {
+    const updateGraphData = useCallback(async (graphId: string, data: Record<string, any>) => {
         try {
             const response = await fetch(`/api/caspar-graphs/${graphId}/update`, {
                 method: 'POST',
@@ -177,7 +166,6 @@ export function useMirasCasparGraph(): UseMirasCasparGraphResult {
         selectedGraph,
         isLoading,
         error,
-        fetchGraphs,
         selectGraph,
         createGraph,
         updateGraph,

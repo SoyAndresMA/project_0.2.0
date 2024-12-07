@@ -1,77 +1,33 @@
 // Configuración de segmento de ruta
 export const dynamic = 'force-dynamic' // Asegura que la ruta siempre sea dinámica
-export const runtime = 'nodejs' // Especifica el runtime
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { CasparGraphService } from '@/lib/db/services';
 import logger from '@/lib/logger/winston-logger';
 
 const casparGraphService = CasparGraphService.getInstance();
 
 export async function POST(
-    request: Request,
+    request: NextRequest,
     { params }: { params: { id: string } }
 ) {
-    // Validar método HTTP
-    if (request.method !== 'POST') {
-        return NextResponse.json(
-            { success: false, error: 'Method not allowed' },
-            { status: 405 }
-        );
-    }
-
     try {
-        logger.info('POST /api/caspar-graphs/[id]/stop received', {
-            graphId: params.id,
-            url: request.url
-        });
-
-        await casparGraphService.stopGraph(params.id);
-
-        return NextResponse.json(
-            { success: true, graphId: params.id },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST',
-                    'Access-Control-Allow-Headers': 'Content-Type'
-                }
-            }
-        );
-
+        const graph = await casparGraphService.stop(params.id);
+        if (!graph) {
+            return NextResponse.json(
+                { success: false, error: 'Graph not found' },
+                { status: 404 }
+            );
+        }
+        return NextResponse.json({ success: true });
     } catch (error) {
-        logger.error('Error in POST /api/caspar-graphs/[id]/stop', {
+        logger.error('Failed to stop graph', {
             graphId: params.id,
             error: error instanceof Error ? error.message : 'Unknown error'
         });
-
         return NextResponse.json(
-            { 
-                success: false,
-                error: error instanceof Error ? error.message : 'Unknown error'
-            },
-            { 
-                status: 500,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST',
-                    'Access-Control-Allow-Headers': 'Content-Type'
-                }
-            }
+            { success: false, error: 'Failed to stop graph' },
+            { status: 500 }
         );
     }
-}
-
-// Manejar preflight requests para CORS
-export async function OPTIONS() {
-    return NextResponse.json(
-        {},
-        {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            }
-        }
-    );
 }

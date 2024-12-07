@@ -126,11 +126,10 @@ export class CasparClipService extends BaseService<CasparClip> {
                 clipId,
                 state: 'playing'
             });
-            this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
+            this.sseService.broadcast(SSEEventType.CLIP_PLAYED, {
                 timestamp: Date.now(),
-                entityId: clipId,
-                itemType: 'casparclip',
-                state: 'playing'
+                clipId,
+                name: clip.name
             });
         } catch (error) {
             console.error(`[CasparClipService] ❌ Error playing clip ${clipId}:`, error);
@@ -139,11 +138,9 @@ export class CasparClipService extends BaseService<CasparClip> {
                 error: error instanceof Error ? error.message : 'Unknown error',
                 stack: error instanceof Error ? error.stack : undefined
             });
-            this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
                 timestamp: Date.now(),
-                entityId: clipId,
-                itemType: 'casparclip',
-                state: 'error',
+                clipId,
                 error: error instanceof Error ? error.message : 'Unknown error'
             });
             throw error;
@@ -174,19 +171,16 @@ export class CasparClipService extends BaseService<CasparClip> {
             // Usar la instancia de MirasCasparClip para detener
             await clip.stop();
             
-            this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
+            this.sseService.broadcast(SSEEventType.CLIP_STOPPED, {
                 timestamp: Date.now(),
-                entityId: clipId,
-                itemType: 'casparclip',
-                state: 'stopped'
+                clipId,
+                name: clip.name
             });
         } catch (error) {
             console.error(`[CasparClipService] ❌ Error stopping clip ${clipId}:`, error);
-            this.sseService.broadcast(SSEEventType.ITEM_STATE_CHANGED, {
+            this.sseService.broadcast(SSEEventType.CLIP_ERROR, {
                 timestamp: Date.now(),
-                entityId: clipId,
-                itemType: 'casparclip',
-                state: 'error',
+                clipId,
                 error: error instanceof Error ? error.message : 'Unknown error'
             });
             throw error;
